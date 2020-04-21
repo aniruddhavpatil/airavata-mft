@@ -441,6 +441,7 @@ public class ResourceServiceHandler extends ResourceServiceGrpc.ResourceServiceI
             responseObserver.onError(Status.INTERNAL.withCause(e)
                     .withDescription("Failed in deleting the Azure resource with id " + request.getResourceId())
                     .asRuntimeException());
+<<<<<<< HEAD
         }
     }
     @Override
@@ -506,6 +507,8 @@ public class ResourceServiceHandler extends ResourceServiceGrpc.ResourceServiceI
             responseObserver.onError(Status.INTERNAL.withCause(e)
                     .withDescription("Failed in deleting the GCS resource with id " + request.getResourceId())
                     .asRuntimeException());
+=======
+>>>>>>> b08fedd35ea6232e3b57ab643bab51e55f17db62
         }
     }
 }

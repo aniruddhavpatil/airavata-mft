@@ -88,6 +88,131 @@ public class FileBasedSecretBackend implements SecretBackend {
     @Override
     public boolean deleteSCPSecret(SCPSecretDeleteRequest request) {
         throw new UnsupportedOperationException("Operation is not supported in backend");
+<<<<<<< HEAD
+=======
+    }
+
+    @Override
+    public Optional<S3Secret> getS3Secret(S3SecretGetRequest request) throws Exception {
+        JSONParser jsonParser = new JSONParser();
+        InputStream inputStream = FileBasedSecretBackend.class.getClassLoader().getResourceAsStream(secretFile);
+
+        try (InputStreamReader reader = new InputStreamReader(inputStream)) {
+            Object obj = jsonParser.parse(reader);
+
+            JSONArray resourceList = (JSONArray) obj;
+
+            List<S3Secret> s3Secrets = (List<S3Secret>) resourceList.stream()
+                    .filter(resource -> "S3".equals(((JSONObject) resource).get("type").toString()))
+                    .map(resource -> {
+                        JSONObject r = (JSONObject) resource;
+
+                        S3Secret s3Secret = S3Secret.newBuilder()
+                                .setSecretId(r.get("secretId").toString())
+                                .setAccessKey(r.get("accessKey").toString())
+                                .setSecretKey(r.get("secretKey").toString()).build();
+
+                        return s3Secret;
+                    }).collect(Collectors.toList());
+            return s3Secrets.stream().filter(r -> request.getSecretId().equals(r.getSecretId())).findFirst();
+        }
+    }
+
+    @Override
+    public S3Secret createS3Secret(S3SecretCreateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean updateS3Secret(S3SecretUpdateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean deleteS3Secret(S3SecretDeleteRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public Optional<BoxSecret> getBoxSecret(BoxSecretGetRequest request) throws Exception {
+        JSONParser jsonParser = new JSONParser();
+        InputStream inputStream = FileBasedSecretBackend.class.getClassLoader().getResourceAsStream(secretFile);
+
+        try (InputStreamReader reader = new InputStreamReader(inputStream)) {
+            Object obj = jsonParser.parse(reader);
+
+            JSONArray resourceList = (JSONArray) obj;
+
+            List<BoxSecret> boxSecrets = (List<BoxSecret>) resourceList.stream()
+                    .filter(resource -> "BOX".equals(((JSONObject) resource).get("type").toString()))
+                    .map(resource -> {
+                        JSONObject r = (JSONObject) resource;
+
+                        BoxSecret boxSecret = BoxSecret.newBuilder()
+                                .setSecretId(r.get("secretId").toString())
+                                .setAccessToken(r.get("accessToken").toString())
+                                .build();
+
+                        return boxSecret;
+                    }).collect(Collectors.toList());
+            return boxSecrets.stream().filter(r -> request.getSecretId().equals(r.getSecretId())).findFirst();
+        }
+    }
+
+    @Override
+    public BoxSecret createBoxSecret(BoxSecretCreateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean updateBoxSecret(BoxSecretUpdateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean deleteBoxSecret(BoxSecretDeleteRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public Optional<AzureSecret> getAzureSecret(AzureSecretGetRequest request) throws Exception {
+        JSONParser jsonParser = new JSONParser();
+        InputStream inputStream = FileBasedSecretBackend.class.getClassLoader().getResourceAsStream(secretFile);
+
+        try (InputStreamReader reader = new InputStreamReader(inputStream)) {
+            Object obj = jsonParser.parse(reader);
+
+            JSONArray resourceList = (JSONArray) obj;
+
+            List<AzureSecret> azureSecrets = (List<AzureSecret>) resourceList.stream()
+                    .filter(resource -> "AZURE".equals(((JSONObject) resource).get("type").toString()))
+                    .map(resource -> {
+                        JSONObject r = (JSONObject) resource;
+
+                        AzureSecret azureSecret = AzureSecret.newBuilder()
+                                .setSecretId(r.get("secretId").toString())
+                                .setConnectionString(r.get("connectionString").toString()).build();
+
+                        return azureSecret;
+                    }).collect(Collectors.toList());
+            return azureSecrets.stream().filter(r -> request.getSecretId().equals(r.getSecretId())).findFirst();
+        }
+    }
+
+    @Override
+    public AzureSecret createAzureSecret(AzureSecretCreateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean updateAzureSecret(AzureSecretUpdateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean deleteAzureSecret(AzureSecretDeleteRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+>>>>>>> b08fedd35ea6232e3b57ab643bab51e55f17db62
     }
 
     @Override

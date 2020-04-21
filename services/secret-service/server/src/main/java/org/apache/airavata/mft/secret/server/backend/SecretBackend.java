@@ -45,9 +45,12 @@ public interface SecretBackend {
     public AzureSecret createAzureSecret(AzureSecretCreateRequest request) throws Exception;
     public boolean updateAzureSecret(AzureSecretUpdateRequest request) throws Exception;
     public boolean deleteAzureSecret(AzureSecretDeleteRequest request) throws Exception;
+<<<<<<< HEAD
 
     public Optional<GCSSecret> getGCSSecret(GCSSecretGetRequest request) throws Exception;
     public GCSSecret createGCSSecret(GCSSecretCreateRequest request) throws Exception;
     public boolean updateGCSSecret(GCSSecretUpdateRequest request) throws Exception;
     public boolean deleteGCSSecret(GCSSecretDeleteRequest request) throws Exception;
+=======
+>>>>>>> b08fedd35ea6232e3b57ab643bab51e55f17db62
 }

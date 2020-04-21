@@ -48,11 +48,14 @@
     "resourceId": "azure-blob",
     "container": "sample-container",
     "blobName": "sample.blob"
+<<<<<<< HEAD
   },
   {
     "type": "GCS",
     "resourceId": "gcs-bucket",
     "bucketName": "",
     "resourcePath": ""
+=======
+>>>>>>> b08fedd35ea6232e3b57ab643bab51e55f17db62
   }
 ]

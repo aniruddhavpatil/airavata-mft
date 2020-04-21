@@ -29,9 +29,15 @@
   {
     "type": "S3",
     "resourceId": "s3-file",
+<<<<<<< HEAD
     "resourcePath": "test.txt",
     "region": "us-east-1",
     "bucketName": "elasticbeanstalk-us-east-1-065325321358"
+=======
+    "resourcePath": "new-file.txt",
+    "region": "us-east-2",
+    "bucketName": "s3-bucket"
+>>>>>>> b08fedd35ea6232e3b57ab643bab51e55f17db62
   },
   {
     "type": "BOX",
@@ -48,11 +54,14 @@
     "resourceId": "azure-blob",
     "container": "sample-container",
     "blobName": "sample.blob"
+<<<<<<< HEAD
   },
   {
     "type": "GCS",
     "resourceId": "gcs-bucket",
     "bucketName": "pika-pika-bucket",
     "resourcePath": "PikaPikaTest.txt"
+=======
+>>>>>>> b08fedd35ea6232e3b57ab643bab51e55f17db62
   }
 ]

@@ -195,6 +195,7 @@ public class SQLResourceBackend implements ResourceBackend {
     public boolean deleteAzureResource(AzureResourceDeleteRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
+<<<<<<< HEAD
 
     @Override
     public Optional<GCSResource> getGCSResource(GCSResourceGetRequest request) throws Exception {
@@ -215,4 +216,6 @@ public class SQLResourceBackend implements ResourceBackend {
     public boolean deleteGCSResource(GCSResourceDeleteRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
+=======
+>>>>>>> b08fedd35ea6232e3b57ab643bab51e55f17db62
 }

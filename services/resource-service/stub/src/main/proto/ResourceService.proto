@@ -341,6 +341,7 @@ service  ResourceService {
            delete: "/v1.0/resource/azure"
         };
     }
+<<<<<<< HEAD
 
     // GCS Resource
 
@@ -367,4 +368,6 @@ service  ResourceService {
             delete: "/v1.0/resource/gcs"
         };
     }
+=======
+>>>>>>> b08fedd35ea6232e3b57ab643bab51e55f17db62
 }
