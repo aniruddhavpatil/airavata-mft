@@ -375,8 +375,8 @@ public class ResourceServiceHandler extends ResourceServiceGrpc.ResourceServiceI
                     .withDescription("Failed in deleting the Box resource with id " + request.getResourceId())
                     .asRuntimeException());
         }    }
-        }
-    }
+       
+
 
     @Override
     public void getAzureResource(AzureResourceGetRequest request, StreamObserver<AzureResource> responseObserver) {
@@ -444,3 +444,4 @@ public class ResourceServiceHandler extends ResourceServiceGrpc.ResourceServiceI
         }
     }
 }
+
