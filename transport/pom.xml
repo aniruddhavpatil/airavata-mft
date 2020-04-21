@@ -38,10 +38,6 @@
         <module>s3-transport</module>
         <module>box-transport</module>
         <module>azure-transport</module>
-<<<<<<< HEAD
-        <module>gcp-transport</module>
-=======
->>>>>>> b08fedd35ea6232e3b57ab643bab51e55f17db62
     </modules>
     <dependencies>
         <dependency>

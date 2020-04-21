@@ -77,19 +77,6 @@ public final class ConnectorResolver {
                         break;
                 }
                 break;
-<<<<<<< HEAD
-            case "GCS":
-                switch (direction) {
-                    case "IN":
-                        className = "org.apache.airavata.mft.transport.gcp.GCSReceiver";
-                        break;
-                    case "OUT":
-                        className = "org.apache.airavata.mft.transport.gcp.GCSSender";
-                        break;
-                }
-                break;
-=======
->>>>>>> b08fedd35ea6232e3b57ab643bab51e55f17db62
         }
 
         if (className != null) {

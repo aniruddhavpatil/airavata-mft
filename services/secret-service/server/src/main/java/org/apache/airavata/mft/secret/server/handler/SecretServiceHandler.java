@@ -192,8 +192,6 @@ public class SecretServiceHandler extends SecretServiceGrpc.SecretServiceImplBas
             responseObserver.onError(Status.INTERNAL.withCause(e)
                     .withDescription("Error in deleting Box Secret with id " + request.getSecretId())
                     .asRuntimeException());
-<<<<<<< HEAD
-=======
         }
     }
 
@@ -251,7 +249,6 @@ public class SecretServiceHandler extends SecretServiceGrpc.SecretServiceImplBas
             responseObserver.onError(Status.INTERNAL.withCause(e)
                     .withDescription("Error in deleting Azure Secret with id " + request.getSecretId())
                     .asRuntimeException());
->>>>>>> b08fedd35ea6232e3b57ab643bab51e55f17db62
         }
     }
 

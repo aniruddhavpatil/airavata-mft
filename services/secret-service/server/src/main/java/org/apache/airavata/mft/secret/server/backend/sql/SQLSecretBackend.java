@@ -130,28 +130,4 @@ public class SQLSecretBackend implements SecretBackend {
     public boolean deleteAzureSecret(AzureSecretDeleteRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
-<<<<<<< HEAD
-
-    @Override
-    public Optional<GCSSecret> getGCSSecret(GCSSecretGetRequest request) throws Exception {
-        throw new UnsupportedOperationException("Operation is not supported in backend");
-    }
-
-    @Override
-    public GCSSecret createGCSSecret(GCSSecretCreateRequest request) throws Exception {
-        throw new UnsupportedOperationException("Operation is not supported in backend");
-    }
-
-    @Override
-    public boolean updateGCSSecret(GCSSecretUpdateRequest request) throws Exception {
-        throw new UnsupportedOperationException("Operation is not supported in backend");
-    }
-
-    @Override
-    public boolean deleteGCSSecret(GCSSecretDeleteRequest request) throws Exception {
-        throw new UnsupportedOperationException("Operation is not supported in backend");
-    }
-
-=======
->>>>>>> b08fedd35ea6232e3b57ab643bab51e55f17db62
 }

@@ -42,12 +42,6 @@ public final class MetadataCollectorResolver {
             case "AZURE":
                 className = "org.apache.airavata.mft.transport.azure.AzureMetadataCollector";
                 break;
-<<<<<<< HEAD
-            case "GCS":
-                className = "org.apache.airavata.mft.transport.gcp.GCSMetadataCollector";
-                break;
-=======
->>>>>>> b08fedd35ea6232e3b57ab643bab51e55f17db62
         }
 
         if (className != null) {
