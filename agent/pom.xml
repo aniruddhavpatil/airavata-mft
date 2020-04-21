@@ -45,6 +45,26 @@
         </dependency>
         <dependency>
             <groupId>org.apache.airavata</groupId>
+            <artifactId>mft-s3-transport</artifactId>
+            <version>0.01-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.airavata</groupId>
+            <artifactId>mft-box-transport</artifactId>
+            <version>0.01-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.airavata</groupId>
+            <artifactId>mft-azure-transport</artifactId>
+            <version>0.01-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.airavata</groupId>
+            <artifactId>mft-gcp-transport</artifactId>
+            <version>0.01-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.airavata</groupId>
             <artifactId>mft-admin</artifactId>
             <version>0.01-SNAPSHOT</version>
         </dependency>
@@ -52,6 +72,17 @@
             <groupId>com.orbitz.consul</groupId>
             <artifactId>consul-client</artifactId>
             <version>${consul.client}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.10.0</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

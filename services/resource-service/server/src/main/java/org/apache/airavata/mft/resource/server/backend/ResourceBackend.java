@@ -41,4 +41,24 @@ public interface ResourceBackend {
     public LocalResource createLocalResource(LocalResourceCreateRequest request) throws Exception;
     public boolean updateLocalResource(LocalResourceUpdateRequest request) throws Exception;
     public boolean deleteLocalResource(LocalResourceDeleteRequest request) throws Exception;
+
+    public Optional<S3Resource> getS3Resource(S3ResourceGetRequest request) throws Exception;
+    public S3Resource createS3Resource(S3ResourceCreateRequest request) throws Exception;
+    public boolean updateS3Resource(S3ResourceUpdateRequest request) throws Exception;
+    public boolean deleteS3Resource(S3ResourceDeleteRequest request) throws Exception;
+
+    public Optional<BoxResource> getBoxResource(BoxResourceGetRequest request) throws Exception;
+    public BoxResource createBoxResource(BoxResourceCreateRequest request) throws Exception;
+    public boolean updateBoxResource(BoxResourceUpdateRequest request) throws Exception;
+    public boolean deleteBoxResource(BoxResourceDeleteRequest request) throws Exception;
+
+    public Optional<AzureResource> getAzureResource(AzureResourceGetRequest request) throws Exception;
+    public AzureResource createAzureResource(AzureResourceCreateRequest request) throws Exception;
+    public boolean updateAzureResource(AzureResourceUpdateRequest request) throws Exception;
+    public boolean deleteAzureResource(AzureResourceDeleteRequest request) throws Exception;
+
+    public Optional<GCSResource> getGCSResource(GCSResourceGetRequest request) throws Exception;
+    public GCSResource createGCSResource(GCSResourceCreateRequest request) throws Exception;
+    public boolean updateGCSResource(GCSResourceUpdateRequest request) throws Exception;
+    public boolean deleteGCSResource(GCSResourceDeleteRequest request) throws Exception;
 }

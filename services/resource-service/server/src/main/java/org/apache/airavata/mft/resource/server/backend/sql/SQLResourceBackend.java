@@ -131,4 +131,88 @@ public class SQLResourceBackend implements ResourceBackend {
         localResourceRepository.deleteById(request.getResourceId());
         return true;
     }
+
+    @Override
+    public Optional<S3Resource> getS3Resource(S3ResourceGetRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+
+    }
+
+    @Override
+    public S3Resource createS3Resource(S3ResourceCreateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+
+    }
+
+    @Override
+    public boolean updateS3Resource(S3ResourceUpdateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+
+    }
+
+    @Override
+    public boolean deleteS3Resource(S3ResourceDeleteRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+
+    }
+
+    @Override
+    public Optional<BoxResource> getBoxResource(BoxResourceGetRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public BoxResource createBoxResource(BoxResourceCreateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean updateBoxResource(BoxResourceUpdateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean deleteBoxResource(BoxResourceDeleteRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public Optional<AzureResource> getAzureResource(AzureResourceGetRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public AzureResource createAzureResource(AzureResourceCreateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean updateAzureResource(AzureResourceUpdateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean deleteAzureResource(AzureResourceDeleteRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public Optional<GCSResource> getGCSResource(GCSResourceGetRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public GCSResource createGCSResource(GCSResourceCreateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean updateGCSResource(GCSResourceUpdateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean deleteGCSResource(GCSResourceDeleteRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
 }

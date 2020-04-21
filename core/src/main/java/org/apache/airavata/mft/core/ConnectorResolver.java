@@ -47,6 +47,46 @@ public final class ConnectorResolver {
                         break;
                 }
                 break;
+            case "S3":
+                switch (direction) {
+                    case "IN":
+                        className = "org.apache.airavata.mft.transport.s3.S3Receiver";
+                        break;
+                    case "OUT":
+                        className = "org.apache.airavata.mft.transport.s3.S3Sender";
+                        break;
+                }
+                break;
+            case "BOX":
+                switch (direction) {
+                    case "IN":
+                        className = "org.apache.airavata.mft.transport.box.BoxReceiver";
+                        break;
+                    case "OUT":
+                        className = "org.apache.airavata.mft.transport.box.BoxSender";
+                        break;
+                }
+                break;
+            case "AZURE":
+                switch (direction) {
+                    case "IN":
+                        className = "org.apache.airavata.mft.transport.azure.AzureReceiver";
+                        break;
+                    case "OUT":
+                        className = "org.apache.airavata.mft.transport.azure.AzureSender";
+                        break;
+                }
+                break;
+            case "GCS":
+                switch (direction) {
+                    case "IN":
+                        className = "org.apache.airavata.mft.transport.gcp.GCSReceiver";
+                        break;
+                    case "OUT":
+                        className = "org.apache.airavata.mft.transport.gcp.GCSSender";
+                        break;
+                }
+                break;
         }
 
         if (className != null) {
