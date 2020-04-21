@@ -341,4 +341,30 @@ service  ResourceService {
            delete: "/v1.0/resource/azure"
         };
     }
+
+    // GCS Resource
+
+    rpc getGCSResource (GCSResourceGetRequest) returns (GCSResource) {
+        option (google.api.http) = {
+            get: "/v1.0/resource/gcs"
+        };
+    }
+
+    rpc createGCSResource (GCSResourceCreateRequest) returns (GCSResource) {
+        option (google.api.http) = {
+            post: "/v1.0/resource/gcs"
+        };
+    }
+
+    rpc updateGCSResource (GCSResourceUpdateRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            put: "/v1.0/resource/gcs"
+        };
+    }
+
+    rpc deleteGCSResource (GCSResourceDeleteRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/v1.0/resource/gcs"
+        };
+    }
 }
