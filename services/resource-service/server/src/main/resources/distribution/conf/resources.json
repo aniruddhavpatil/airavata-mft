@@ -54,5 +54,10 @@
     "resourceId": "gcs-bucket",
     "bucketName": "",
     "resourcePath": ""
+  },
+  {
+    "type": "GDrive",
+    "resourceId": "gdrive-bucket",
+    "bucketName": ""
   }
 ]

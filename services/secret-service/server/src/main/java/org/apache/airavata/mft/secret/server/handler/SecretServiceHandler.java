@@ -1,20 +1,3 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.apache.airavata.mft.secret.server.handler;
 
 import com.google.protobuf.Empty;
@@ -252,64 +235,62 @@ public class SecretServiceHandler extends SecretServiceGrpc.SecretServiceImplBas
         }
     }
 
-    // GCS
 
     @Override
-    public void getGCSSecret(GCSSecretGetRequest request, StreamObserver<GCSSecret> responseObserver) {
+    public void getGDriveSecret(GDriveSecretGetRequest request, StreamObserver<GDriveSecret> responseObserver) {
         try {
-            this.backend.getGCSSecret(request).ifPresentOrElse(secret -> {
+            this.backend.getGDriveSecret(request).ifPresentOrElse(secret -> {
                 responseObserver.onNext(secret);
                 responseObserver.onCompleted();
             }, () -> {
                 responseObserver.onError(Status.INTERNAL
-                        .withDescription("No GCS Secret with id " + request.getSecretId())
+                        .withDescription("No GDRive Secret with id " + request.getSecretId())
                         .asRuntimeException());
             });
 
         } catch (Exception e) {
             logger.error("Error in retrieving GCS Secret with id " + request.getSecretId(), e);
             responseObserver.onError(Status.INTERNAL.withCause(e)
-                    .withDescription("Error in retrieving GCS Secret with id " + request.getSecretId())
+                    .withDescription("Error in retrieving GDrive Secret with id " + request.getSecretId())
                     .asRuntimeException());
         }
-        super.getGCSSecret(request, responseObserver);
+        super.getGDriveSecret(request, responseObserver);
     }
 
     @Override
-    public void createGCSSecret(GCSSecretCreateRequest request, StreamObserver<GCSSecret> responseObserver) {
+    public void createGDriveSecret(GDriveSecretCreateRequest request, StreamObserver<GDriveSecret> responseObserver) {
         try {
-            this.backend.createGCSSecret(request);
+            this.backend.createGDriveSecret(request);
         } catch (Exception e) {
             logger.error("Error in creating GCS Secret", e);
             responseObserver.onError(Status.INTERNAL.withCause(e)
-                    .withDescription("Error in creating GCS Secret")
+                    .withDescription("Error in creating GDrive Secret")
                     .asRuntimeException());
         }
     }
 
     @Override
-    public void updateGCSSecret(GCSSecretUpdateRequest request, StreamObserver<Empty> responseObserver) {
+    public void updateGDriveSecret(GDriveSecretUpdateRequest request, StreamObserver<Empty> responseObserver) {
         try {
-            this.backend.updateGCSSecret(request);
+            this.backend.updateGDriveSecret(request);
         } catch (Exception e) {
             logger.error("Error in updating GCS Secret with id {}", request.getSecretId(), e);
             responseObserver.onError(Status.INTERNAL.withCause(e)
-                    .withDescription("Error in updating GCS Secret with id " + request.getSecretId())
+                    .withDescription("Error in updating GDrive Secret with id " + request.getSecretId())
                     .asRuntimeException());
         }
     }
 
     @Override
-    public void deleteGCSSecret(GCSSecretDeleteRequest request, StreamObserver<Empty> responseObserver) {
+    public void deleteGDriveSecret(GDriveSecretDeleteRequest request, StreamObserver<Empty> responseObserver) {
         try {
-            this.backend.deleteGCSSecret(request);
+            this.backend.deleteGDriveSecret(request);
         } catch (Exception e) {
             logger.error("Error in deleting GCS Secret with id {}", request.getSecretId(), e);
             responseObserver.onError(Status.INTERNAL.withCause(e)
-                    .withDescription("Error in deleting GCS Secret with id " + request.getSecretId())
+                    .withDescription("Error in deleting GDrive Secret with id " + request.getSecretId())
                     .asRuntimeException());
         }
     }
-
 
 }

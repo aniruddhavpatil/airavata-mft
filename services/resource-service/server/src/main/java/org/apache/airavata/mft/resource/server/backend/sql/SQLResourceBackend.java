@@ -196,23 +196,24 @@ public class SQLResourceBackend implements ResourceBackend {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
 
+
     @Override
-    public Optional<GCSResource> getGCSResource(GCSResourceGetRequest request) throws Exception {
+    public Optional<GDriveResource> getGDriveResource(GDriveResourceGetRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
 
     @Override
-    public GCSResource createGCSResource(GCSResourceCreateRequest request) throws Exception {
+    public GDriveResource createGDriveResource(GDriveResourceCreateRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
 
     @Override
-    public boolean updateGCSResource(GCSResourceUpdateRequest request) throws Exception {
+    public boolean updateGDriveResource(GDriveResourceUpdateRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
 
     @Override
-    public boolean deleteGCSResource(GCSResourceDeleteRequest request) throws Exception {
+    public boolean deleteGDriveResource(GDriveResourceDeleteRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
 }

@@ -301,8 +301,11 @@ public class FileBasedResourceBackend implements ResourceBackend {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
 
+
+
+
     @Override
-    public Optional<GCSResource> getGCSResource(GCSResourceGetRequest request) throws Exception {
+    public Optional<GDriveResource> getGDriveResource(GDriveResourceGetRequest request) throws Exception {
         JSONParser jsonParser = new JSONParser();
         InputStream inputStream = FileBasedResourceBackend.class.getClassLoader().getResourceAsStream(resourceFile);
 
@@ -311,35 +314,34 @@ public class FileBasedResourceBackend implements ResourceBackend {
 
             JSONArray resourceList = (JSONArray) obj;
 
-            List<GCSResource> gcsResources = (List<GCSResource>) resourceList.stream()
+            List<GDriveResource> gcsResources = (List<GDriveResource>) resourceList.stream()
                     .filter(resource -> "GCS".equals(((JSONObject) resource).get("type").toString()))
                     .map(resource -> {
                         JSONObject r = (JSONObject) resource;
 
-                        GCSResource gcsResource = GCSResource.newBuilder()
+                        GDriveResource gcsResource = GDriveResource.newBuilder()
                                 .setBucketName(r.get("bucketName").toString())
                                 .setResourceId(r.get("resourceId").toString())
-                                .setResourcePath(r.get("resourcePath").toString())
                                 .build();
 
                         return gcsResource;
                     }).collect(Collectors.toList());
             return gcsResources.stream().filter(r -> request.getResourceId().equals(r.getResourceId())).findFirst();
-        }
-    }
+        }    }
 
     @Override
-    public GCSResource createGCSResource(GCSResourceCreateRequest request) throws Exception {
+    public GDriveResource createGDriveResource(GDriveResourceCreateRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
 
     @Override
-    public boolean updateGCSResource(GCSResourceUpdateRequest request) throws Exception {
+    public boolean updateGDriveResource(GDriveResourceUpdateRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
 
     @Override
-    public boolean deleteGCSResource(GCSResourceDeleteRequest request) throws Exception {
+    public boolean deleteGDriveResource(GDriveResourceDeleteRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
+
 }

@@ -24,7 +24,6 @@ import org.apache.airavata.mft.secret.service.*;
 import org.apache.airavata.model.credential.store.SSHCredential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.Optional;
 
 public class AiravataSecretBackend implements SecretBackend {
@@ -140,23 +139,104 @@ public class AiravataSecretBackend implements SecretBackend {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
 
+
+    // @Override
+    // public Optional<S3Secret> getS3Secret(S3SecretGetRequest request) throws Exception {
+    //     throw new UnsupportedOperationException("Operation is not supported in backend");
+    // }
+
+    // @Override
+    // public S3Secret createS3Secret(S3SecretCreateRequest request) throws Exception {
+    //     throw new UnsupportedOperationException("Operation is not supported in backend");
+    // }
+
+    // @Override
+    // public boolean updateS3Secret(S3SecretUpdateRequest request) throws Exception {
+    //     throw new UnsupportedOperationException("Operation is not supported in backend");
+    // }
+
+    // @Override
+    // public boolean deleteS3Secret(S3SecretDeleteRequest request) throws Exception {
+    //     throw new UnsupportedOperationException("Operation is not supported in backend");
+    // }
+
+    // @Override
+    // public Optional<BoxSecret> getBoxSecret(BoxSecretGetRequest request) throws Exception {
+    //     throw new UnsupportedOperationException("Operation is not supported in backend");
+    // }
+
+    // @Override
+    // public BoxSecret createBoxSecret(BoxSecretCreateRequest request) throws Exception {
+    //     throw new UnsupportedOperationException("Operation is not supported in backend");
+    // }
+
+    // @Override
+    // public boolean updateBoxSecret(BoxSecretUpdateRequest request) throws Exception {
+    //     throw new UnsupportedOperationException("Operation is not supported in backend");
+    // }
+
+    // @Override
+    // public boolean deleteBoxSecret(BoxSecretDeleteRequest request) throws Exception {
+    //     throw new UnsupportedOperationException("Operation is not supported in backend");
+    // }
+
+    // @Override
+    // public Optional<AzureSecret> getAzureSecret(AzureSecretGetRequest request) throws Exception {
+    //     throw new UnsupportedOperationException("Operation is not supported in backend");
+    // }
+
+    // @Override
+    // public AzureSecret createAzureSecret(AzureSecretCreateRequest request) throws Exception {
+    //     throw new UnsupportedOperationException("Operation is not supported in backend");
+    // }
+
+    // @Override
+    // public boolean updateAzureSecret(AzureSecretUpdateRequest request) throws Exception {
+    //     throw new UnsupportedOperationException("Operation is not supported in backend");
+    // }
+
+    // @Override
+    // public boolean deleteAzureSecret(AzureSecretDeleteRequest request) throws Exception {
+    //     throw new UnsupportedOperationException("Operation is not supported in backend");
+    // }
+
+    // @Override
+    // public Optional<GCSSecret> getGCSSecret(GCSSecretGetRequest request) throws Exception {
+    //     throw new UnsupportedOperationException("Operation is not supported in backend");
+    // }
+
+    // @Override
+    // public GCSSecret createGCSSecret(GCSSecretCreateRequest request) throws Exception {
+    //     throw new UnsupportedOperationException("Operation is not supported in backend");
+    // }
+
+    // @Override
+    // public boolean updateGCSSecret(GCSSecretUpdateRequest request) throws Exception {
+    //     throw new UnsupportedOperationException("Operation is not supported in backend");
+    // }
+
+    // @Override
+    // public boolean deleteGCSSecret(GCSSecretDeleteRequest request) throws Exception {
+    //     throw new UnsupportedOperationException("Operation is not supported in backend");
+    // }
+
     @Override
-    public Optional<GCSSecret> getGCSSecret(GCSSecretGetRequest request) throws Exception {
+    public Optional<GDriveSecret> getGDriveSecret(GDriveSecretGetRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
 
     @Override
-    public GCSSecret createGCSSecret(GCSSecretCreateRequest request) throws Exception {
+    public GDriveSecret createGDriveSecret(GDriveSecretCreateRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
 
     @Override
-    public boolean updateGCSSecret(GCSSecretUpdateRequest request) throws Exception {
+    public boolean updateGDriveSecret(GDriveSecretUpdateRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
 
     @Override
-    public boolean deleteGCSSecret(GCSSecretDeleteRequest request) throws Exception {
+    public boolean deleteGDriveSecret(GDriveSecretDeleteRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
 

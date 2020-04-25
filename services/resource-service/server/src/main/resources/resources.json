@@ -5,9 +5,9 @@
     "resourcePath": "/tmp/1mb.txt",
     "scpStorage" : {
       "storageId": "remote-ssh-storage",
-      "host": "149.165.171.139",
+      "host": "149.165.170.202",
       "port": 22,
-      "user": "root"
+      "user": "ubuntu"
     }
   },
   {
@@ -24,14 +24,14 @@
   {
     "type": "LOCAL",
     "resourceId":  "10mb-file",
-    "resourcePath": "/tmp/1mb.txt"
+    "resourcePath": "/tmp/100mb.txt"
   },
   {
     "type": "S3",
     "resourceId": "s3-file",
-    "resourcePath": "test.txt",
+    "resourcePath": "mft-requests",
     "region": "us-east-1",
-    "bucketName": "elasticbeanstalk-us-east-1-065325321358"
+    "bucketName": "nsa-test"
   },
   {
     "type": "BOX",
@@ -54,5 +54,10 @@
     "resourceId": "gcs-bucket",
     "bucketName": "pika-pika-bucket",
     "resourcePath": "PikaPikaTest.txt"
+  },
+  {
+    "type": "GDrive",
+    "resourceId": "gdrive-bucket",
+    "bucketName": ""
   }
 ]

@@ -185,6 +185,30 @@ message BoxResourceDeleteRequest {
     string resourceId = 1;
 }
 
+
+// GDrive resource
+message GDriveResource {
+    string resourceId = 1;
+    string bucketName = 2;
+}
+
+message GDriveResourceGetRequest {
+    string resourceId = 1;
+}
+
+message GDriveResourceCreateRequest {
+    string bucketName = 1;
+}
+
+message GDriveResourceUpdateRequest {
+    string resourceId = 1;
+    string bucketName = 2;
+}
+
+message GDriveResourceDeleteRequest {
+    string resourceId = 1;
+}
+
 service  ResourceService {
     // SCP Storage
 
@@ -342,29 +366,31 @@ service  ResourceService {
         };
     }
 
-    // GCS Resource
+    //GDrive resources
+    rpc getGDriveResource (GDriveResourceGetRequest) returns (GDriveResource) {
+            option (google.api.http) = {
+                get: "/v1.0/resource/gdrive"
+            };
+        }
 
-    rpc getGCSResource (GCSResourceGetRequest) returns (GCSResource) {
-        option (google.api.http) = {
-            get: "/v1.0/resource/gcs"
-        };
-    }
+        rpc createGDriveResource (GDriveResourceCreateRequest) returns (GDriveResource) {
+            option (google.api.http) = {
+                post: "/v1.0/resource/gdrive"
+            };
+        }
 
-    rpc createGCSResource (GCSResourceCreateRequest) returns (GCSResource) {
-        option (google.api.http) = {
-            post: "/v1.0/resource/gcs"
-        };
-    }
+        rpc updateGDriveResource (GDriveResourceUpdateRequest) returns (google.protobuf.Empty) {
+            option (google.api.http) = {
+                put: "/v1.0/resource/gdrive"
+            };
+        }
 
-    rpc updateGCSResource (GCSResourceUpdateRequest) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            put: "/v1.0/resource/gcs"
-        };
-    }
+        rpc deleteGDriveResource (GDriveResourceDeleteRequest) returns (google.protobuf.Empty) {
+            option (google.api.http) = {
+                delete: "/v1.0/resource/gdrive"
+            };
+        }
 
-    rpc deleteGCSResource (GCSResourceDeleteRequest) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/v1.0/resource/gcs"
-        };
-    }
+
+
 }

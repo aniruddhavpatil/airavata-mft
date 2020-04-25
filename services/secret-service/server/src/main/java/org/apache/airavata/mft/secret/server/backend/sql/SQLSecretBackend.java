@@ -131,24 +131,24 @@ public class SQLSecretBackend implements SecretBackend {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
 
+
     @Override
-    public Optional<GCSSecret> getGCSSecret(GCSSecretGetRequest request) throws Exception {
+    public Optional<GDriveSecret> getGDriveSecret(GDriveSecretGetRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
 
     @Override
-    public GCSSecret createGCSSecret(GCSSecretCreateRequest request) throws Exception {
+    public GDriveSecret createGDriveSecret(GDriveSecretCreateRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
 
     @Override
-    public boolean updateGCSSecret(GCSSecretUpdateRequest request) throws Exception {
+    public boolean updateGDriveSecret(GDriveSecretUpdateRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
 
     @Override
-    public boolean deleteGCSSecret(GCSSecretDeleteRequest request) throws Exception {
+    public boolean deleteGDriveSecret(GDriveSecretDeleteRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
-
 }

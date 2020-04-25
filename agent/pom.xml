@@ -60,7 +60,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.airavata</groupId>
-            <artifactId>mft-gcp-transport</artifactId>
+            <artifactId>mft-gdrive-transport</artifactId>
             <version>0.01-SNAPSHOT</version>
         </dependency>
         <dependency>

@@ -46,8 +46,8 @@ public interface SecretBackend {
     public boolean updateAzureSecret(AzureSecretUpdateRequest request) throws Exception;
     public boolean deleteAzureSecret(AzureSecretDeleteRequest request) throws Exception;
 
-    public Optional<GCSSecret> getGCSSecret(GCSSecretGetRequest request) throws Exception;
-    public GCSSecret createGCSSecret(GCSSecretCreateRequest request) throws Exception;
-    public boolean updateGCSSecret(GCSSecretUpdateRequest request) throws Exception;
-    public boolean deleteGCSSecret(GCSSecretDeleteRequest request) throws Exception;
+    public Optional<GDriveSecret> getGDriveSecret(GDriveSecretGetRequest request) throws Exception;
+    public GDriveSecret createGDriveSecret(GDriveSecretCreateRequest request) throws Exception;
+    public boolean updateGDriveSecret(GDriveSecretUpdateRequest request) throws Exception;
+    public boolean deleteGDriveSecret(GDriveSecretDeleteRequest request) throws Exception;
 }

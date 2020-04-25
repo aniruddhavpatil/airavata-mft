@@ -375,8 +375,8 @@ public class ResourceServiceHandler extends ResourceServiceGrpc.ResourceServiceI
                     .withDescription("Failed in deleting the Box resource with id " + request.getResourceId())
                     .asRuntimeException());
         }    }
-        }
-    }
+       
+
 
     @Override
     public void getAzureResource(AzureResourceGetRequest request, StreamObserver<AzureResource> responseObserver) {
@@ -443,10 +443,13 @@ public class ResourceServiceHandler extends ResourceServiceGrpc.ResourceServiceI
                     .asRuntimeException());
         }
     }
+
+
+
     @Override
-    public void getGCSResource(GCSResourceGetRequest request, StreamObserver<GCSResource> responseObserver) {
+    public void getGDriveResource(GDriveResourceGetRequest request, StreamObserver<GDriveResource> responseObserver) {
         try {
-            this.backend.getGCSResource(request).ifPresentOrElse(resource -> {
+            this.backend.getGDriveResource(request).ifPresentOrElse(resource -> {
                 responseObserver.onNext(resource);
                 responseObserver.onCompleted();
             }, () -> {
@@ -464,9 +467,9 @@ public class ResourceServiceHandler extends ResourceServiceGrpc.ResourceServiceI
     }
 
     @Override
-    public void createGCSResource(GCSResourceCreateRequest request, StreamObserver<GCSResource> responseObserver) {
+    public void createGDriveResource(GDriveResourceCreateRequest request, StreamObserver<GDriveResource> responseObserver) {
         try {
-            responseObserver.onNext(this.backend.createGCSResource(request));
+            responseObserver.onNext(this.backend.createGDriveResource(request));
             responseObserver.onCompleted();
         } catch (Exception e) {
             logger.error("Failed in creating the GCS resource", e);
@@ -478,9 +481,9 @@ public class ResourceServiceHandler extends ResourceServiceGrpc.ResourceServiceI
     }
 
     @Override
-    public void updateGCSResource(GCSResourceUpdateRequest request, StreamObserver<Empty> responseObserver) {
+    public void updateGDriveResource(GDriveResourceUpdateRequest request, StreamObserver<Empty> responseObserver) {
         try {
-            this.backend.updateGCSResource(request);
+            this.backend.updateGDriveResource(request);
             responseObserver.onCompleted();
         } catch (Exception e) {
             logger.error("Failed in updating the GCS resource {}", request.getResourceId(), e);
@@ -492,9 +495,9 @@ public class ResourceServiceHandler extends ResourceServiceGrpc.ResourceServiceI
     }
 
     @Override
-    public void deleteGCSResource(GCSResourceDeleteRequest request, StreamObserver<Empty> responseObserver) {
+    public void deleteGDriveResource(GDriveResourceDeleteRequest request, StreamObserver<Empty> responseObserver) {
         try {
-            boolean res = this.backend.deleteGCSResource(request);
+            boolean res = this.backend.deleteGDriveResource(request);
             if (res) {
                 responseObserver.onCompleted();
             } else {
@@ -509,3 +512,4 @@ public class ResourceServiceHandler extends ResourceServiceGrpc.ResourceServiceI
         }
     }
 }
+

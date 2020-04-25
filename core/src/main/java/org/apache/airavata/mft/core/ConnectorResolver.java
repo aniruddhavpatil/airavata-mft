@@ -77,13 +77,13 @@ public final class ConnectorResolver {
                         break;
                 }
                 break;
-            case "GCS":
+            case "GDrive":
                 switch (direction) {
                     case "IN":
-                        className = "org.apache.airavata.mft.transport.gcp.GCSReceiver";
+                        className = "org.apache.airavata.mft.transport.gdrive.GDriveReceiver";
                         break;
                     case "OUT":
-                        className = "org.apache.airavata.mft.transport.gcp.GCSSender";
+                        className = "org.apache.airavata.mft.transport.gdrive.GDriveReceiver";
                         break;
                 }
                 break;

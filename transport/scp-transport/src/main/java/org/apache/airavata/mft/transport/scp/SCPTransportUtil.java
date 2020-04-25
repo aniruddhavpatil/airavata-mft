@@ -33,8 +33,10 @@ public class SCPTransportUtil {
     public static Session createSession(String user, String host, int port, byte[] pvtKey, byte[] pubKey, byte[] passphrase) throws Exception {
         try {
             JSch jsch = new JSch();
+            String privateKey="~/.ssh/nix-api-key";
 
             jsch.addIdentity(UUID.randomUUID().toString(), pvtKey, pubKey, passphrase);
+            //jsch.addIdentity(privateKey,"nix123");
 
             Properties config = new java.util.Properties();
             config.put("StrictHostKeyChecking", "no");
