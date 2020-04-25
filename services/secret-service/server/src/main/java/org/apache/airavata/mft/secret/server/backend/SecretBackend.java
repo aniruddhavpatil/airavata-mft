@@ -45,4 +45,9 @@ public interface SecretBackend {
     public AzureSecret createAzureSecret(AzureSecretCreateRequest request) throws Exception;
     public boolean updateAzureSecret(AzureSecretUpdateRequest request) throws Exception;
     public boolean deleteAzureSecret(AzureSecretDeleteRequest request) throws Exception;
+
+    public Optional<GDriveSecret> getGDriveSecret(GDriveSecretGetRequest request) throws Exception;
+    public GDriveSecret createGDriveSecret(GDriveSecretCreateRequest request) throws Exception;
+    public boolean updateGDriveSecret(GDriveSecretUpdateRequest request) throws Exception;
+    public boolean deleteGDriveSecret(GDriveSecretDeleteRequest request) throws Exception;
 }

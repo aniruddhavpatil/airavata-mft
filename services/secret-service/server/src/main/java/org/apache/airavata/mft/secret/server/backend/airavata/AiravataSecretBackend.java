@@ -20,26 +20,7 @@ package org.apache.airavata.mft.secret.server.backend.airavata;
 import org.apache.airavata.credential.store.client.CredentialStoreClientFactory;
 import org.apache.airavata.credential.store.cpi.CredentialStoreService;
 import org.apache.airavata.mft.secret.server.backend.SecretBackend;
-import org.apache.airavata.mft.secret.service.AzureSecret;
-import org.apache.airavata.mft.secret.service.AzureSecretCreateRequest;
-import org.apache.airavata.mft.secret.service.AzureSecretDeleteRequest;
-import org.apache.airavata.mft.secret.service.AzureSecretGetRequest;
-import org.apache.airavata.mft.secret.service.AzureSecretUpdateRequest;
-import org.apache.airavata.mft.secret.service.BoxSecret;
-import org.apache.airavata.mft.secret.service.BoxSecretCreateRequest;
-import org.apache.airavata.mft.secret.service.BoxSecretDeleteRequest;
-import org.apache.airavata.mft.secret.service.BoxSecretGetRequest;
-import org.apache.airavata.mft.secret.service.BoxSecretUpdateRequest;
-import org.apache.airavata.mft.secret.service.S3Secret;
-import org.apache.airavata.mft.secret.service.S3SecretCreateRequest;
-import org.apache.airavata.mft.secret.service.S3SecretDeleteRequest;
-import org.apache.airavata.mft.secret.service.S3SecretGetRequest;
-import org.apache.airavata.mft.secret.service.S3SecretUpdateRequest;
-import org.apache.airavata.mft.secret.service.SCPSecret;
-import org.apache.airavata.mft.secret.service.SCPSecretCreateRequest;
-import org.apache.airavata.mft.secret.service.SCPSecretDeleteRequest;
-import org.apache.airavata.mft.secret.service.SCPSecretGetRequest;
-import org.apache.airavata.mft.secret.service.SCPSecretUpdateRequest;
+import org.apache.airavata.mft.secret.service.*;
 import org.apache.airavata.model.credential.store.SSHCredential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -238,6 +219,26 @@ public class AiravataSecretBackend implements SecretBackend {
     // public boolean deleteGCSSecret(GCSSecretDeleteRequest request) throws Exception {
     //     throw new UnsupportedOperationException("Operation is not supported in backend");
     // }
+
+    @Override
+    public Optional<GDriveSecret> getGDriveSecret(GDriveSecretGetRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public GDriveSecret createGDriveSecret(GDriveSecretCreateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean updateGDriveSecret(GDriveSecretUpdateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean deleteGDriveSecret(GDriveSecretDeleteRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
 
 
 }

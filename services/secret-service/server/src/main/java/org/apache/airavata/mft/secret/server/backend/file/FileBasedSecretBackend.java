@@ -375,4 +375,45 @@ public class FileBasedSecretBackend implements SecretBackend {
     // }
 
 
+    @Override
+    public Optional<GDriveSecret> getGDriveSecret(GDriveSecretGetRequest request) throws Exception {
+        //throw new UnsupportedOperationException("Operation is not supported in backend");
+        JSONParser jsonParser = new JSONParser();
+        InputStream inputStream = FileBasedSecretBackend.class.getClassLoader().getResourceAsStream(secretFile);
+
+        try (InputStreamReader reader = new InputStreamReader(inputStream)) {
+            Object obj = jsonParser.parse(reader);
+
+            JSONArray resourceList = (JSONArray) obj;
+
+            List<GDriveSecret> gcsSecrets = (List<GDriveSecret>) resourceList.stream()
+                    .filter(resource -> "GCS".equals(((JSONObject) resource).get("type").toString()))
+                    .map(resource -> {
+                        JSONObject r = (JSONObject) resource;
+
+                        GDriveSecret gcsSecret = GDriveSecret.newBuilder()
+                                .setSecretId(r.get("secretId").toString())
+                                .setConnectionString(r.get("connectionString").toString()).build();
+
+                        return gcsSecret;
+                    }).collect(Collectors.toList());
+            return gcsSecrets.stream().filter(r -> request.getSecretId().equals(r.getSecretId())).findFirst();
+        }
+    }
+
+    @Override
+    public GDriveSecret createGDriveSecret(GDriveSecretCreateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean updateGDriveSecret(GDriveSecretUpdateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean deleteGDriveSecret(GDriveSecretDeleteRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
 }

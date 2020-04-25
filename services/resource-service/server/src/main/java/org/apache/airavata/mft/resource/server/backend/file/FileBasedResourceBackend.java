@@ -300,4 +300,48 @@ public class FileBasedResourceBackend implements ResourceBackend {
     public boolean deleteAzureResource(AzureResourceDeleteRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
+
+
+
+
+    @Override
+    public Optional<GDriveResource> getGDriveResource(GDriveResourceGetRequest request) throws Exception {
+        JSONParser jsonParser = new JSONParser();
+        InputStream inputStream = FileBasedResourceBackend.class.getClassLoader().getResourceAsStream(resourceFile);
+
+        try (InputStreamReader reader = new InputStreamReader(inputStream)) {
+            Object obj = jsonParser.parse(reader);
+
+            JSONArray resourceList = (JSONArray) obj;
+
+            List<GDriveResource> gcsResources = (List<GDriveResource>) resourceList.stream()
+                    .filter(resource -> "GCS".equals(((JSONObject) resource).get("type").toString()))
+                    .map(resource -> {
+                        JSONObject r = (JSONObject) resource;
+
+                        GDriveResource gcsResource = GDriveResource.newBuilder()
+                                .setBucketName(r.get("bucketName").toString())
+                                .setResourceId(r.get("resourceId").toString())
+                                .build();
+
+                        return gcsResource;
+                    }).collect(Collectors.toList());
+            return gcsResources.stream().filter(r -> request.getResourceId().equals(r.getResourceId())).findFirst();
+        }    }
+
+    @Override
+    public GDriveResource createGDriveResource(GDriveResourceCreateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean updateGDriveResource(GDriveResourceUpdateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean deleteGDriveResource(GDriveResourceDeleteRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
 }

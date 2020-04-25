@@ -5,9 +5,9 @@
     "resourcePath": "/tmp/1mb.txt",
     "scpStorage" : {
       "storageId": "remote-ssh-storage",
-      "host": "149.165.171.139",
+      "host": "149.165.170.202",
       "port": 22,
-      "user": "root"
+      "user": "ubuntu"
     }
   },
   {
@@ -24,20 +24,14 @@
   {
     "type": "LOCAL",
     "resourceId":  "10mb-file",
-    "resourcePath": "/tmp/1mb.txt"
+    "resourcePath": "/tmp/100mb.txt"
   },
   {
     "type": "S3",
     "resourceId": "s3-file",
-<<<<<<< HEAD
-    "resourcePath": "test.txt",
+    "resourcePath": "mft-requests",
     "region": "us-east-1",
-    "bucketName": "elasticbeanstalk-us-east-1-065325321358"
-=======
-    "resourcePath": "new-file.txt",
-    "region": "us-east-2",
-    "bucketName": "s3-bucket"
->>>>>>> b08fedd35ea6232e3b57ab643bab51e55f17db62
+    "bucketName": "nsa-test"
   },
   {
     "type": "BOX",
@@ -54,14 +48,16 @@
     "resourceId": "azure-blob",
     "container": "sample-container",
     "blobName": "sample.blob"
-<<<<<<< HEAD
   },
   {
     "type": "GCS",
     "resourceId": "gcs-bucket",
     "bucketName": "pika-pika-bucket",
     "resourcePath": "PikaPikaTest.txt"
-=======
->>>>>>> b08fedd35ea6232e3b57ab643bab51e55f17db62
+  },
+  {
+    "type": "GDrive",
+    "resourceId": "gdrive-bucket",
+    "bucketName": ""
   }
 ]

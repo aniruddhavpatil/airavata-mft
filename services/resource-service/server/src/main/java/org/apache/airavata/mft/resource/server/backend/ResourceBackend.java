@@ -56,4 +56,10 @@ public interface ResourceBackend {
     public AzureResource createAzureResource(AzureResourceCreateRequest request) throws Exception;
     public boolean updateAzureResource(AzureResourceUpdateRequest request) throws Exception;
     public boolean deleteAzureResource(AzureResourceDeleteRequest request) throws Exception;
+
+
+    public Optional<GDriveResource> getGDriveResource(GDriveResourceGetRequest request) throws Exception;
+    public GDriveResource createGDriveResource(GDriveResourceCreateRequest request) throws Exception;
+    public boolean updateGDriveResource(GDriveResourceUpdateRequest request) throws Exception;
+    public boolean deleteGDriveResource(GDriveResourceDeleteRequest request) throws Exception;
 }

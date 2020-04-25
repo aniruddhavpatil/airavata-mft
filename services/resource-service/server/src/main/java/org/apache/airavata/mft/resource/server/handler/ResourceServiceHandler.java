@@ -443,5 +443,73 @@ public class ResourceServiceHandler extends ResourceServiceGrpc.ResourceServiceI
                     .asRuntimeException());
         }
     }
+
+
+
+    @Override
+    public void getGDriveResource(GDriveResourceGetRequest request, StreamObserver<GDriveResource> responseObserver) {
+        try {
+            this.backend.getGDriveResource(request).ifPresentOrElse(resource -> {
+                responseObserver.onNext(resource);
+                responseObserver.onCompleted();
+            }, () -> {
+                responseObserver.onError(Status.INTERNAL
+                        .withDescription("No GCS Resource with id " + request.getResourceId())
+                        .asRuntimeException());
+            });
+        } catch (Exception e) {
+            logger.error("Failed in retrieving GCS resource with id {}", request.getResourceId(), e);
+
+            responseObserver.onError(Status.INTERNAL.withCause(e)
+                    .withDescription("Failed in retrieving GCS resource with id " + request.getResourceId())
+                    .asRuntimeException());
+        }
+    }
+
+    @Override
+    public void createGDriveResource(GDriveResourceCreateRequest request, StreamObserver<GDriveResource> responseObserver) {
+        try {
+            responseObserver.onNext(this.backend.createGDriveResource(request));
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            logger.error("Failed in creating the GCS resource", e);
+
+            responseObserver.onError(Status.INTERNAL.withCause(e)
+                    .withDescription("Failed in creating the GCS resource")
+                    .asRuntimeException());
+        }
+    }
+
+    @Override
+    public void updateGDriveResource(GDriveResourceUpdateRequest request, StreamObserver<Empty> responseObserver) {
+        try {
+            this.backend.updateGDriveResource(request);
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            logger.error("Failed in updating the GCS resource {}", request.getResourceId(), e);
+
+            responseObserver.onError(Status.INTERNAL.withCause(e)
+                    .withDescription("Failed in updating the GCS resource with id " + request.getResourceId())
+                    .asRuntimeException());
+        }
+    }
+
+    @Override
+    public void deleteGDriveResource(GDriveResourceDeleteRequest request, StreamObserver<Empty> responseObserver) {
+        try {
+            boolean res = this.backend.deleteGDriveResource(request);
+            if (res) {
+                responseObserver.onCompleted();
+            } else {
+                responseObserver.onError(new Exception("Failed to delete GCS Resource with id " + request.getResourceId()));
+            }
+        } catch (Exception e) {
+            logger.error("Failed in deleting the GCS resource {}", request.getResourceId(), e);
+
+            responseObserver.onError(Status.INTERNAL.withCause(e)
+                    .withDescription("Failed in deleting the GCS resource with id " + request.getResourceId())
+                    .asRuntimeException());
+        }
+    }
 }
 
