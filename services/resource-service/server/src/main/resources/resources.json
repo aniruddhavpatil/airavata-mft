@@ -5,9 +5,9 @@
     "resourcePath": "/tmp/1mb.txt",
     "scpStorage" : {
       "storageId": "remote-ssh-storage",
-      "host": "149.165.170.202",
+      "host": "",
       "port": 22,
-      "user": "ubuntu"
+      "user": ""
     }
   },
   {
@@ -16,20 +16,20 @@
     "resourcePath": "/tmp/KAMA20200408_003653_V06",
     "scpStorage" : {
       "storageId": "remote-ssh-storage",
-      "host": "149.165.171.139",
+      "host": "",
       "port": 22,
-      "user": "root"
+      "user": ""
     }
   },
   {
     "type": "LOCAL",
     "resourceId":  "10mb-file",
-    "resourcePath": "/tmp/100mb.txt"
+    "resourcePath": "/tmp/latestnsagdrive.txt"
   },
   {
     "type": "S3",
     "resourceId": "s3-file",
-    "resourcePath": "mft-requests",
+    "resourcePath": "sample.png",
     "region": "us-east-1",
     "bucketName": "nsa-test"
   },
@@ -57,7 +57,7 @@
   },
   {
     "type": "GDrive",
-    "resourceId": "gdrive-bucket",
-    "bucketName": ""
+    "resourceId": "gdrive-file",
+    "resourcePath": "nsagdrive.txt"
   }
 ]

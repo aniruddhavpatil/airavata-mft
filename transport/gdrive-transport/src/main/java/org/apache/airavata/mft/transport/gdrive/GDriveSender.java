@@ -19,22 +19,28 @@ package org.apache.airavata.mft.transport.gdrive;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.FileContent;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.InputStreamContent;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.storage.StorageScopes;
-import com.google.api.services.storage.model.ObjectAccessControl;
-import com.google.api.services.storage.model.StorageObject;
+//import com.google.api.services.storage.StorageScopes;
+//import com.google.api.services.storage.model.ObjectAccessControl;
+//import com.google.api.services.storage.model.StorageObject;
+//
+////import com.google.cloud.storage.Storage;
+//
+//import com.google.api.services.storage.Storage;
+//
+//
+//import com.google.api.services.storage.Storage.Objects.Insert;
 
-//import com.google.cloud.storage.Storage;
-
-import com.google.api.services.storage.Storage;
-
-
-import com.google.api.services.storage.Storage.Objects.Insert;
-
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.DriveScopes;
+import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.PermissionList;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.apache.airavata.mft.secret.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +54,9 @@ import org.apache.airavata.mft.resource.service.GDriveResource;
 import org.apache.airavata.mft.resource.service.GDriveResourceGetRequest;
 import org.apache.airavata.mft.secret.client.SecretServiceClient;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -58,17 +66,17 @@ public class GDriveSender implements Connector {
 
     private static final Logger logger = LoggerFactory.getLogger(GDriveSender.class);
 
-    private GDriveResource gcsResource;
-    private Storage storage;
+    private GDriveResource gdriveResource;
+    private Drive drive;
     private JsonObject jsonObject;
 
     @Override
     public void init(String resourceId, String credentialToken, String resourceServiceHost, int resourceServicePort, String secretServiceHost, int secretServicePort) throws Exception {
         ResourceServiceGrpc.ResourceServiceBlockingStub resourceClient = ResourceServiceClient.buildClient(resourceServiceHost, resourceServicePort);
-        this.gcsResource = resourceClient.getGDriveResource(GDriveResourceGetRequest.newBuilder().setResourceId(resourceId).build());
+        this.gdriveResource = resourceClient.getGDriveResource(GDriveResourceGetRequest.newBuilder().setResourceId(resourceId).build());
 
         SecretServiceGrpc.SecretServiceBlockingStub secretClient = SecretServiceClient.buildClient(secretServiceHost, secretServicePort);
-        GDriveSecret gcsSecret = secretClient.getGDriveSecret(GDriveSecretGetRequest.newBuilder().setSecretId(credentialToken).build());
+        GDriveSecret gdriveSecret = secretClient.getGDriveSecret(GDriveSecretGetRequest.newBuilder().setSecretId(credentialToken).build());
 
         //Path of the credentials json is connectionString
 //        storage = StorageOptions.newBuilder()
@@ -77,13 +85,18 @@ public class GDriveSender implements Connector {
 //                .getService();
         HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
         JsonFactory jsonFactory = new JacksonFactory();
-        GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream(gcsSecret.getConnectionString()));
+        String jsonString= gdriveSecret.getCredentialsJson();
+        jsonObject= new JsonParser().parse(jsonString).getAsJsonObject();
+        GoogleCredential credential = GoogleCredential.fromStream(new ByteArrayInputStream(jsonString.getBytes(StandardCharsets.UTF_8)), transport, jsonFactory);
         if (credential.createScopedRequired()) {
-            Collection<String> scopes = StorageScopes.all();
+            Collection<String> scopes =  Arrays.asList(DriveScopes.DRIVE,"https://www.googleapis.com/auth/drive");
             credential = credential.createScoped(scopes);
+
         }
 
-        storage=new Storage.Builder(transport, jsonFactory, credential).build();
+         drive = new Drive.Builder(transport, jsonFactory, credential)
+                .setApplicationName("My Project").build();
+
     }
 
     @Override
@@ -93,24 +106,29 @@ public class GDriveSender implements Connector {
 
     @Override
     public void startStream(ConnectorContext context) throws Exception {
-        logger.info("Starting GCS Sender stream for transfer {}", context.getTransferId());
+        logger.info("Starting GDrive Sender stream for transfer {}", context.getTransferId());
         logger.info("Content length for transfer {} {}", context.getTransferId(), context.getMetadata().getResourceSize());
 //        ObjectMetadata metadata = new ObjectMetadata();
 //        metadata.setContentLength(context.getMetadata().getResourceSize());
 //        s3Client.putObject(this.s3Resource.getBucketName(), this.s3Resource.getResourcePath(), context.getStreamBuffer().getInputStream(), metadata);
+
+
+
         InputStreamContent contentStream = new InputStreamContent(
                 "text/plain", context.getStreamBuffer().getInputStream());
-        StorageObject objectMetadata = new StorageObject()
-                // Set the destination object name
-                .setName("PikaTest.txt")
-                // Set the access control list to publicly read-only
-                .setAcl(Arrays.asList(new ObjectAccessControl().setEntity("allUsers").setRole("READER")));
+        String entityUser = jsonObject.get("client_email").getAsString();
+        File fileMetadata= new File();
 
-        Insert insertRequest = storage.objects().insert(
-                gcsResource.getBucketName(), objectMetadata,contentStream);
+        logger.info("Listing files in GDRIVESENDER "+drive.files().list().execute());
+        fileMetadata.setName(this.gdriveResource.getResourceId());
+        FileContent fileContent= new FileContent("text/plain",new java.io.File(gdriveResource.getResourcePath()));
+        //String id = service.files().get("root").setFields("id").execute().getId();
+        logger.info("File content is sssssssssss "+fileContent.toString());
 
-        insertRequest.execute();
+        File file= drive.files().create(fileMetadata,fileContent).setFields("id").execute();
+        logger.info("File input and metadata created in "+file.getId());
 
-        logger.info("Completed GCS Sender stream for transfer {}", context.getTransferId());
+
+        logger.info("Completed GDrive Sender stream for transfer {}", context.getTransferId());
     }
 }

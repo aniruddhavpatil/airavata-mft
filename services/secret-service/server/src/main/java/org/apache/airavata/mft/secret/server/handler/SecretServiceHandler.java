@@ -249,7 +249,7 @@ public class SecretServiceHandler extends SecretServiceGrpc.SecretServiceImplBas
             });
 
         } catch (Exception e) {
-            logger.error("Error in retrieving GCS Secret with id " + request.getSecretId(), e);
+            logger.error("Error in retrieving GDrive Secret with id " + request.getSecretId(), e);
             responseObserver.onError(Status.INTERNAL.withCause(e)
                     .withDescription("Error in retrieving GDrive Secret with id " + request.getSecretId())
                     .asRuntimeException());
@@ -262,7 +262,7 @@ public class SecretServiceHandler extends SecretServiceGrpc.SecretServiceImplBas
         try {
             this.backend.createGDriveSecret(request);
         } catch (Exception e) {
-            logger.error("Error in creating GCS Secret", e);
+            logger.error("Error in creating GDrive Secret", e);
             responseObserver.onError(Status.INTERNAL.withCause(e)
                     .withDescription("Error in creating GDrive Secret")
                     .asRuntimeException());
@@ -274,7 +274,7 @@ public class SecretServiceHandler extends SecretServiceGrpc.SecretServiceImplBas
         try {
             this.backend.updateGDriveSecret(request);
         } catch (Exception e) {
-            logger.error("Error in updating GCS Secret with id {}", request.getSecretId(), e);
+            logger.error("Error in updating GDrive Secret with id {}", request.getSecretId(), e);
             responseObserver.onError(Status.INTERNAL.withCause(e)
                     .withDescription("Error in updating GDrive Secret with id " + request.getSecretId())
                     .asRuntimeException());
@@ -286,7 +286,7 @@ public class SecretServiceHandler extends SecretServiceGrpc.SecretServiceImplBas
         try {
             this.backend.deleteGDriveSecret(request);
         } catch (Exception e) {
-            logger.error("Error in deleting GCS Secret with id {}", request.getSecretId(), e);
+            logger.error("Error in deleting GDRive Secret with id {}", request.getSecretId(), e);
             responseObserver.onError(Status.INTERNAL.withCause(e)
                     .withDescription("Error in deleting GDrive Secret with id " + request.getSecretId())
                     .asRuntimeException());

@@ -57,7 +57,7 @@
   },
   {
     "type": "GDrive",
-    "resourceId": "gdrive-bucket",
-    "bucketName": ""
+    "resourceId": "gdrive-file",
+    "resourcePath": "nsagdrive.txt"
   }
 ]

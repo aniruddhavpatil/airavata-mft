@@ -189,7 +189,7 @@ message BoxResourceDeleteRequest {
 // GDrive resource
 message GDriveResource {
     string resourceId = 1;
-    string bucketName = 2;
+    string resourcePath = 2;
 }
 
 message GDriveResourceGetRequest {
@@ -197,17 +197,18 @@ message GDriveResourceGetRequest {
 }
 
 message GDriveResourceCreateRequest {
-    string bucketName = 1;
+    string resourcePath = 1;
 }
 
 message GDriveResourceUpdateRequest {
     string resourceId = 1;
-    string bucketName = 2;
+    string resourcePath = 2;
 }
 
 message GDriveResourceDeleteRequest {
     string resourceId = 1;
 }
+
 
 service  ResourceService {
     // SCP Storage

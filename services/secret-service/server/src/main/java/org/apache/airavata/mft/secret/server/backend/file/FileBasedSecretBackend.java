@@ -386,18 +386,18 @@ public class FileBasedSecretBackend implements SecretBackend {
 
             JSONArray resourceList = (JSONArray) obj;
 
-            List<GDriveSecret> gcsSecrets = (List<GDriveSecret>) resourceList.stream()
-                    .filter(resource -> "GCS".equals(((JSONObject) resource).get("type").toString()))
+            List<GDriveSecret> gDriveSecrets = (List<GDriveSecret>) resourceList.stream()
+                    .filter(resource -> "GDrive".equals(((JSONObject) resource).get("type").toString()))
                     .map(resource -> {
                         JSONObject r = (JSONObject) resource;
 
-                        GDriveSecret gcsSecret = GDriveSecret.newBuilder()
+                        GDriveSecret gDriveSecret = GDriveSecret.newBuilder()
                                 .setSecretId(r.get("secretId").toString())
-                                .setConnectionString(r.get("connectionString").toString()).build();
+                                .setCredentialsJson(r.get("credentialsJson").toString()).build();
 
-                        return gcsSecret;
+                        return gDriveSecret;
                     }).collect(Collectors.toList());
-            return gcsSecrets.stream().filter(r -> request.getSecretId().equals(r.getSecretId())).findFirst();
+            return gDriveSecrets.stream().filter(r -> request.getSecretId().equals(r.getSecretId())).findFirst();
         }
     }
 

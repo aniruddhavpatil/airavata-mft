@@ -22,9 +22,10 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.storage.Storage;
-import com.google.api.services.storage.StorageScopes;
-import com.google.api.services.storage.model.StorageObject;
+//import com.google.api.services.storage.Storage;
+//import com.google.api.services.storage.StorageScopes;
+//import com.google.api.services.storage.model.StorageObject;
+import com.google.api.services.drive.model.File;
 import org.apache.airavata.mft.core.ResourceMetadata;
 import org.apache.airavata.mft.core.api.MetadataCollector;
 import org.apache.airavata.mft.resource.client.ResourceServiceClient;
@@ -36,23 +37,26 @@ import org.apache.airavata.mft.secret.service.SecretServiceGrpc;
 import java.io.ByteArrayInputStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.Collection;
+import java.util.*;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.storage.Storage;
-import com.google.api.services.storage.StorageScopes;
-import com.google.api.services.storage.model.StorageObject;
+//import com.google.api.services.storage.Storage;
+//import com.google.api.services.storage.StorageScopes;
+//import com.google.api.services.storage.model.StorageObject;
 import org.apache.airavata.mft.core.ResourceMetadata;
 import org.apache.airavata.mft.core.api.MetadataCollector;
 import org.apache.airavata.mft.resource.client.ResourceServiceClient;
 import org.apache.airavata.mft.resource.service.*;
 import org.apache.airavata.mft.secret.client.SecretServiceClient;
 import org.apache.airavata.mft.secret.service.*;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.DriveScopes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.util.Collection;
@@ -64,6 +68,9 @@ public class GDriveMetadataCollector implements MetadataCollector {
     private String secretServiceHost;
     private int secretServicePort;
     boolean initialized = false;
+   // private static final List<String> SCOPES = Arrays.asList(DriveScopes.DRIVE,
+     //       "https://www.googleapis.com/auth/drive.install");
+   private static final Logger logger = LoggerFactory.getLogger(GDriveMetadataCollector.class);
 
     @Override
     public void init(String resourceServiceHost, int resourceServicePort, String secretServiceHost, int secretServicePort) {
@@ -84,31 +91,41 @@ public class GDriveMetadataCollector implements MetadataCollector {
     public ResourceMetadata getGetResourceMetadata(String resourceId, String credentialToken) throws Exception {
         checkInitialized();
         ResourceServiceGrpc.ResourceServiceBlockingStub resourceClient = ResourceServiceClient.buildClient(resourceServiceHost, resourceServicePort);
-        GDriveResource gcsResource = resourceClient.getGDriveResource(GDriveResourceGetRequest.newBuilder().setResourceId(resourceId).build());
+        GDriveResource gdriveResource = resourceClient.getGDriveResource(GDriveResourceGetRequest.newBuilder().setResourceId(resourceId).build());
 
         SecretServiceGrpc.SecretServiceBlockingStub secretClient = SecretServiceClient.buildClient(secretServiceHost, secretServicePort);
-        GDriveSecret gcsSecret = secretClient.getGDriveSecret(GDriveSecretGetRequest.newBuilder().setSecretId(credentialToken).build());
-        //Path of the credentials json is connectionString
-//        Storage storage = (Storage) StorageOptions.newBuilder()
-//                .setCredentials(ServiceAccountCredentials.fromStream(new FileInputStream(gcsSecret.getConnectionString())))
-//                .build()
-//                .getService();
+        GDriveSecret gdriveSecret = secretClient.getGDriveSecret(GDriveSecretGetRequest.newBuilder().setSecretId(credentialToken).build());
+
+
+
         HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
         JsonFactory jsonFactory = new JacksonFactory();
-        GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream(gcsSecret.getConnectionString()),transport,jsonFactory);
+        String jsonString=gdriveSecret.getCredentialsJson();
+        GoogleCredential credential = GoogleCredential.fromStream(new ByteArrayInputStream(jsonString.getBytes(StandardCharsets.UTF_8)), transport, jsonFactory);
         if (credential.createScopedRequired()) {
-            Collection<String> scopes = StorageScopes.all();
-            credential = credential.createScoped(scopes);
+            Collection<String> scopes =  Arrays.asList(DriveScopes.DRIVE,"https://www.googleapis.com/auth/drive");
+           credential = credential.createScoped(scopes);
+
         }
 
-        Storage storage=new Storage.Builder(transport, jsonFactory, credential).build();
-
-        ResourceMetadata metadata = new ResourceMetadata();
-        StorageObject gcsMetadata = storage.objects().get(gcsResource.getBucketName(),"PikaTest.txt").execute();
-        metadata.setResourceSize(gcsMetadata.getSize().longValue());
-        metadata.setMd5sum(gcsMetadata.getEtag());
-        metadata.setUpdateTime(gcsMetadata.getTimeStorageClassUpdated().getValue());
-        metadata.setCreatedTime(gcsMetadata.getTimeCreated().getValue());
+//        Storage storage=new Storage.Builder(transport, jsonFactory, credential).build();
+        Drive drive = new Drive.Builder(transport, jsonFactory, credential)
+                .setApplicationName("My Project").build();
+        logger.info("Listing files in GDRIVEMETADATACOLLECTOR "+drive.files().list().execute());
+//
+       ResourceMetadata metadata = new ResourceMetadata();
+       File file= drive.files().get(gdriveResource.getResourcePath()).execute();        //get the metada of file
+        logger.info("!!!!!!!!!!! I GOT THE FILE!!!!!! with GDRIVE credentials");
+        metadata.setResourceSize(file.getSize().longValue());
+        String md5Sum = String.format("%032x", new BigInteger(1, Base64.getDecoder().decode(file.getMd5Checksum())));
+        metadata.setMd5sum(md5Sum);
+        metadata.setUpdateTime(file.getModifiedTime().getValue());
+        metadata.setCreatedTime(file.getCreatedTime().getValue());
+//        StorageObject gcsMetadata = storage.objects().get(gcsResource.getBucketName(),"PikaTest.txt").execute();
+//        metadata.setResourceSize(gcsMetadata.getSize().longValue());
+//        metadata.setMd5sum(gcsMetadata.getEtag());
+//        metadata.setUpdateTime(gcsMetadata.getTimeStorageClassUpdated().getValue());
+//        metadata.setCreatedTime(gcsMetadata.getTimeCreated().getValue());
         return metadata;
     }
 
@@ -116,25 +133,32 @@ public class GDriveMetadataCollector implements MetadataCollector {
     public Boolean isAvailable(String resourceId, String credentialToken) throws Exception {
         checkInitialized();
         ResourceServiceGrpc.ResourceServiceBlockingStub resourceClient = ResourceServiceClient.buildClient(resourceServiceHost, resourceServicePort);
-        GDriveResource gcsResource = resourceClient.getGDriveResource(GDriveResourceGetRequest.newBuilder().setResourceId(resourceId).build());
+        GDriveResource gdriveResource = resourceClient.getGDriveResource(GDriveResourceGetRequest.newBuilder().setResourceId(resourceId).build());
 
         SecretServiceGrpc.SecretServiceBlockingStub secretClient = SecretServiceClient.buildClient(secretServiceHost, secretServicePort);
-        GDriveSecret gcsSecret = secretClient.getGDriveSecret(GDriveSecretGetRequest.newBuilder().setSecretId(credentialToken).build());
+        GDriveSecret gdriveSecret = secretClient.getGDriveSecret(GDriveSecretGetRequest.newBuilder().setSecretId(credentialToken).build());
         //Path of the credentials json is connectionString
 //        Storage storage = (Storage) StorageOptions.newBuilder()
 //                .setCredentials(ServiceAccountCredentials.fromStream(new FileInputStream(gcsSecret.getConnectionString())))
 //                .build()
 //                .getService();
+
+
+        logger.info("Inside GDRiveMetadata is available()");
         HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
         JsonFactory jsonFactory = new JacksonFactory();
-        GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream(gcsSecret.getConnectionString()), transport, jsonFactory);
+        String jsonString=gdriveSecret.getCredentialsJson();
+        GoogleCredential credential = GoogleCredential.fromStream(new ByteArrayInputStream(jsonString.getBytes(StandardCharsets.UTF_8)), transport, jsonFactory);
         if (credential.createScopedRequired()) {
-            Collection<String> scopes = StorageScopes.all();
+            Collection<String> scopes =  Arrays.asList(DriveScopes.DRIVE,"https://www.googleapis.com/auth/drive.install");
             credential = credential.createScoped(scopes);
+
         }
 
-        Storage storage = new Storage.Builder(transport, jsonFactory, credential).build();
-        return !storage.objects().get(gcsResource.getBucketName(), "PikaTest.txt").execute().isEmpty();
+        Drive drive = new Drive.Builder(transport, jsonFactory, credential)
+                .setApplicationName("My Project").build();
+       // Storage storage = new Storage.Builder(transport, jsonFactory, credential).build();
+        return !drive.files().get(gdriveResource.getResourcePath()).execute().isEmpty();//!storage.objects().get(gcsResource.getBucketName(), "PikaTest.txt").execute().isEmpty();
 
     }
 }

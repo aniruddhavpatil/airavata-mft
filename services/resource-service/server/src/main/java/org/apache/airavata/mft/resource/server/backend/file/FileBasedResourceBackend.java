@@ -314,19 +314,19 @@ public class FileBasedResourceBackend implements ResourceBackend {
 
             JSONArray resourceList = (JSONArray) obj;
 
-            List<GDriveResource> gcsResources = (List<GDriveResource>) resourceList.stream()
-                    .filter(resource -> "GCS".equals(((JSONObject) resource).get("type").toString()))
+            List<GDriveResource> gDriveResources = (List<GDriveResource>) resourceList.stream()
+                    .filter(resource -> "GDrive".equals(((JSONObject) resource).get("type").toString()))
                     .map(resource -> {
                         JSONObject r = (JSONObject) resource;
 
-                        GDriveResource gcsResource = GDriveResource.newBuilder()
-                                .setBucketName(r.get("bucketName").toString())
+                        GDriveResource gDriveResource = GDriveResource.newBuilder()
                                 .setResourceId(r.get("resourceId").toString())
+                                .setResourcePath(r.get("resourcePath").toString())
                                 .build();
 
-                        return gcsResource;
+                        return gDriveResource;
                     }).collect(Collectors.toList());
-            return gcsResources.stream().filter(r -> request.getResourceId().equals(r.getResourceId())).findFirst();
+            return gDriveResources.stream().filter(r -> request.getResourceId().equals(r.getResourceId())).findFirst();
         }    }
 
     @Override
