@@ -25,7 +25,9 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 //import com.google.api.services.storage.Storage;
 //import com.google.api.services.storage.StorageScopes;
 //import com.google.api.services.storage.model.StorageObject;
+
 import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.FileList;
 import org.apache.airavata.mft.core.ResourceMetadata;
 import org.apache.airavata.mft.core.api.MetadataCollector;
 import org.apache.airavata.mft.resource.client.ResourceServiceClient;
@@ -103,7 +105,8 @@ public class GDriveMetadataCollector implements MetadataCollector {
         String jsonString=gdriveSecret.getCredentialsJson();
         GoogleCredential credential = GoogleCredential.fromStream(new ByteArrayInputStream(jsonString.getBytes(StandardCharsets.UTF_8)), transport, jsonFactory);
         if (credential.createScopedRequired()) {
-            Collection<String> scopes =  Arrays.asList(DriveScopes.DRIVE,"https://www.googleapis.com/auth/drive");
+            Collection<String> scopes =  DriveScopes.all();
+                    //Arrays.asList(DriveScopes.DRIVE,"https://www.googleapis.com/auth/drive");
            credential = credential.createScoped(scopes);
 
         }
@@ -111,21 +114,52 @@ public class GDriveMetadataCollector implements MetadataCollector {
 //        Storage storage=new Storage.Builder(transport, jsonFactory, credential).build();
         Drive drive = new Drive.Builder(transport, jsonFactory, credential)
                 .setApplicationName("My Project").build();
-        logger.info("Listing files in GDRIVEMETADATACOLLECTOR "+drive.files().list().execute());
+
+
+        logger.info("Listing files in GDRIVEMETADATACOLLECTOR "+drive.files().list().setFields("files(id,name,modifiedTime,md5Checksum)").execute());
 //
        ResourceMetadata metadata = new ResourceMetadata();
-       File file= drive.files().get(gdriveResource.getResourcePath()).execute();        //get the metada of file
-        logger.info("!!!!!!!!!!! I GOT THE FILE!!!!!! with GDRIVE credentials");
-        metadata.setResourceSize(file.getSize().longValue());
-        String md5Sum = String.format("%032x", new BigInteger(1, Base64.getDecoder().decode(file.getMd5Checksum())));
-        metadata.setMd5sum(md5Sum);
-        metadata.setUpdateTime(file.getModifiedTime().getValue());
-        metadata.setCreatedTime(file.getCreatedTime().getValue());
+
+        logger.info("BE AWARE FILE ID IS "+drive.files().get("1LKSXadWP_ZbJxbINP_Iy3BGqf8avwBH0").execute());
+       logger.info("BE AWARE CHECK gdriveResource.getResourcePath()"+gdriveResource.getResourcePath());
+
+
+
+       FileList fileList=drive.files().list().setFields("files(id,name,modifiedTime,md5Checksum,size)").execute();
+       logger.info("File data is as follows##########################################");
+      for (File f:fileList.getFiles()){
+           if(f.getName().equalsIgnoreCase(gdriveResource.getResourcePath())){
+
+               logger.info("!!!!!!!!!!! I GOT THE FILE!!!!!! with GDRIVE credentials"+f.getName()+ " AND "+ gdriveResource.getResourcePath());
+
+               String md5Sum = String.format("%032x", new BigInteger(1, Base64.getDecoder().decode(f.getMd5Checksum())));
+               metadata.setMd5sum(md5Sum);
+              metadata.setUpdateTime(f.getModifiedTime().getValue());
+                metadata.setResourceSize(f.getSize().longValue());
+//                metadata.setCreatedTime(f.getCreatedTime().getValue());
+           }
+       }
+
+
+
+
+      // File file=drive.files().get(gdriveResource.getResourceId()).execute();        //get the metada of file
+
+
+
+
+
+
+
+
+
 //        StorageObject gcsMetadata = storage.objects().get(gcsResource.getBucketName(),"PikaTest.txt").execute();
-//        metadata.setResourceSize(gcsMetadata.getSize().longValue());
+      // metadata.setResourceSize(gcsMetadata.getSize().longValue());
 //        metadata.setMd5sum(gcsMetadata.getEtag());
 //        metadata.setUpdateTime(gcsMetadata.getTimeStorageClassUpdated().getValue());
 //        metadata.setCreatedTime(gcsMetadata.getTimeCreated().getValue());
+        //metadata.setResourceSize(new Long(10));
+
         return metadata;
     }
 
@@ -150,7 +184,8 @@ public class GDriveMetadataCollector implements MetadataCollector {
         String jsonString=gdriveSecret.getCredentialsJson();
         GoogleCredential credential = GoogleCredential.fromStream(new ByteArrayInputStream(jsonString.getBytes(StandardCharsets.UTF_8)), transport, jsonFactory);
         if (credential.createScopedRequired()) {
-            Collection<String> scopes =  Arrays.asList(DriveScopes.DRIVE,"https://www.googleapis.com/auth/drive.install");
+            Collection<String> scopes =  DriveScopes.all();
+            //Arrays.asList(DriveScopes.DRIVE,"https://www.googleapis.com/auth/drive");
             credential = credential.createScoped(scopes);
 
         }

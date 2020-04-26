@@ -26,6 +26,8 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 //import com.google.api.services.storage.StorageScopes;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
+import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.FileList;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.airavata.mft.core.ConnectorContext;
@@ -44,8 +46,10 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collection;
 
 import org.apache.airavata.mft.core.ConnectorContext;
@@ -87,7 +91,8 @@ public class GDriveReceiver implements Connector {
         String jsonString= gdriveSecret.getCredentialsJson();
         GoogleCredential credential = GoogleCredential.fromStream(new ByteArrayInputStream(jsonString.getBytes(StandardCharsets.UTF_8)), transport, jsonFactory);
         if (credential.createScopedRequired()) {
-            Collection<String> scopes =  Arrays.asList(DriveScopes.DRIVE,"https://www.googleapis.com/auth/drive");
+            Collection<String> scopes =  DriveScopes.all();
+            //Arrays.asList(DriveScopes.DRIVE,"https://www.googleapis.com/auth/drive");
             credential = credential.createScoped(scopes);
 
         }
@@ -106,7 +111,14 @@ public class GDriveReceiver implements Connector {
     public void startStream(ConnectorContext context) throws Exception {
        logger.info("Starting GDrive Receiver stream for transfer {}", context.getTransferId());
 
-               InputStream inputStream=drive.files().get(this.gdriveResource.getResourcePath()).executeMediaAsInputStream();
+        String id = null;
+        FileList fileList=drive.files().list().setFields("files(id,name,modifiedTime,md5Checksum,size)").execute();
+        for (File f:fileList.getFiles()) {
+            logger.info("File matched in receiver"+f.getName());
+            id = f.getId();
+        }
+
+        InputStream inputStream=drive.files().get(id).executeMediaAsInputStream();
                OutputStream outputStream=context.getStreamBuffer().getOutputStream();
         int read;
         long bytes = 0;

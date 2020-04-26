@@ -86,10 +86,13 @@ public class GDriveSender implements Connector {
         HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
         JsonFactory jsonFactory = new JacksonFactory();
         String jsonString= gdriveSecret.getCredentialsJson();
+        //String entityUser = jsonObject.get("client_email").getAsString();
         jsonObject= new JsonParser().parse(jsonString).getAsJsonObject();
         GoogleCredential credential = GoogleCredential.fromStream(new ByteArrayInputStream(jsonString.getBytes(StandardCharsets.UTF_8)), transport, jsonFactory);
+
         if (credential.createScopedRequired()) {
-            Collection<String> scopes =  Arrays.asList(DriveScopes.DRIVE,"https://www.googleapis.com/auth/drive");
+            Collection<String> scopes =  DriveScopes.all();
+            //Arrays.asList(DriveScopes.DRIVE,"https://www.googleapis.com/auth/drive");
             credential = credential.createScoped(scopes);
 
         }
@@ -116,18 +119,32 @@ public class GDriveSender implements Connector {
 
         InputStreamContent contentStream = new InputStreamContent(
                 "text/plain", context.getStreamBuffer().getInputStream());
+
         String entityUser = jsonObject.get("client_email").getAsString();
+
+
+
+
+
         File fileMetadata= new File();
+//
+//        logger.info("Listing files in GDRIVESENDER "+drive.files().list().execute());
 
-        logger.info("Listing files in GDRIVESENDER "+drive.files().list().execute());
-        fileMetadata.setName(this.gdriveResource.getResourceId());
-        FileContent fileContent= new FileContent("text/plain",new java.io.File(gdriveResource.getResourcePath()));
-        //String id = service.files().get("root").setFields("id").execute().getId();
-        logger.info("File content is sssssssssss "+fileContent.toString());
+        fileMetadata.setName(this.gdriveResource.getResourcePath());
+        //permission
+//        File file= new File();
+//        file.setName(gdriveResource.getResourcePath());
 
-        File file= drive.files().create(fileMetadata,fileContent).setFields("id").execute();
-        logger.info("File input and metadata created in "+file.getId());
+      //  FileContent fileContent= new FileContent("text/plain",fileMetadata.set);
+//        //String id = service.files().get("root").setFields("id").execute().getId();
+       logger.info("File content is sssssssssss "+contentStream.toString());
+//
+       File file= drive.files().create(fileMetadata,contentStream).setFields("files(id,name,modifiedTime,md5Checksum,size)").execute();
 
+       // logger.info("File input and metadata created in "+file.getId());
+
+
+       // java.io.File file = new java.io.File()
 
         logger.info("Completed GDrive Sender stream for transfer {}", context.getTransferId());
     }
