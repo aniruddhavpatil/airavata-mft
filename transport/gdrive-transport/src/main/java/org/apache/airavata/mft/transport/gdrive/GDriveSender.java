@@ -38,6 +38,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.Permission;
 import com.google.api.services.drive.model.PermissionList;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -126,11 +127,15 @@ public class GDriveSender implements Connector {
 
 
 
+
+
+
         File fileMetadata= new File();
 //
 //        logger.info("Listing files in GDRIVESENDER "+drive.files().list().execute());
 
         fileMetadata.setName(this.gdriveResource.getResourcePath());
+        //fileMetadata.setId(this.gdriveResource.getResourceId());
         //permission
 //        File file= new File();
 //        file.setName(gdriveResource.getResourcePath());
@@ -138,10 +143,19 @@ public class GDriveSender implements Connector {
       //  FileContent fileContent= new FileContent("text/plain",fileMetadata.set);
 //        //String id = service.files().get("root").setFields("id").execute().getId();
        logger.info("File content is sssssssssss "+contentStream.toString());
-//
-       File file= drive.files().create(fileMetadata,contentStream).setFields("files(id,name,modifiedTime,md5Checksum,size)").execute();
 
-       // logger.info("File input and metadata created in "+file.getId());
+
+       // drive.permissions().create(fileMetadata,userPermission);
+//
+       File file= drive.files().create(fileMetadata,contentStream).setFields("id").execute();   // worked from gdrive to outside
+
+        Permission userPermission = new Permission();
+        userPermission.setType("user").setRole("writer").setEmailAddress("nsagdrive@virtual-plexus-275316.iam.gserviceaccount.com");
+
+        drive.permissions().create(file.getId(),userPermission).execute();
+
+
+        // logger.info("File input and metadata created in "+file.getId());
 
 
        // java.io.File file = new java.io.File()

@@ -113,9 +113,14 @@ public class GDriveReceiver implements Connector {
 
         String id = null;
         FileList fileList=drive.files().list().setFields("files(id,name,modifiedTime,md5Checksum,size)").execute();
+        logger.info("gdriveResource.getResourcePath() " +gdriveResource.getResourcePath());
+        logger.info("Listing files in GDRIVEMETADATACOLLECTOR "+drive.files().list().setFields("files(id,name,modifiedTime,md5Checksum)").execute());
         for (File f:fileList.getFiles()) {
-            logger.info("File matched in receiver"+f.getName());
-            id = f.getId();
+            if(f.getName().equalsIgnoreCase(gdriveResource.getResourcePath())){
+                logger.info("File matched in receiver"+f.getName());
+                id = f.getId();
+            }
+
         }
 
         InputStream inputStream=drive.files().get(id).executeMediaAsInputStream();

@@ -120,7 +120,7 @@ public class GDriveMetadataCollector implements MetadataCollector {
 //
        ResourceMetadata metadata = new ResourceMetadata();
 
-        logger.info("BE AWARE FILE ID IS "+drive.files().get("1LKSXadWP_ZbJxbINP_Iy3BGqf8avwBH0").execute());
+       logger.info("BE AWARE FILE ID IS "+drive.files().get("1LKSXadWP_ZbJxbINP_Iy3BGqf8avwBH0").execute());
        logger.info("BE AWARE CHECK gdriveResource.getResourcePath()"+gdriveResource.getResourcePath());
 
 
@@ -132,11 +132,11 @@ public class GDriveMetadataCollector implements MetadataCollector {
 
                logger.info("!!!!!!!!!!! I GOT THE FILE!!!!!! with GDRIVE credentials"+f.getName()+ " AND "+ gdriveResource.getResourcePath());
 
-               String md5Sum = String.format("%032x", new BigInteger(1, Base64.getDecoder().decode(f.getMd5Checksum())));
-               metadata.setMd5sum(md5Sum);
-              metadata.setUpdateTime(f.getModifiedTime().getValue());
-                metadata.setResourceSize(f.getSize().longValue());
-//                metadata.setCreatedTime(f.getCreatedTime().getValue());
+               //String md5Sum = String.format("%032x", new BigInteger(1, Base64.getDecoder().decode(f.getMd5Checksum())));
+               metadata.setMd5sum(f.getMd5Checksum());
+               metadata.setUpdateTime(f.getModifiedTime().getValue());
+               metadata.setResourceSize(f.getSize().longValue());
+              // metadata.setCreatedTime(f.getCreatedTime().getValue());
            }
        }
 
@@ -144,14 +144,6 @@ public class GDriveMetadataCollector implements MetadataCollector {
 
 
       // File file=drive.files().get(gdriveResource.getResourceId()).execute();        //get the metada of file
-
-
-
-
-
-
-
-
 
 //        StorageObject gcsMetadata = storage.objects().get(gcsResource.getBucketName(),"PikaTest.txt").execute();
       // metadata.setResourceSize(gcsMetadata.getSize().longValue());
