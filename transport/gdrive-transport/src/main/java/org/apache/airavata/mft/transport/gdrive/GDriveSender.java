@@ -99,7 +99,7 @@ public class GDriveSender implements Connector {
         }
 
          drive = new Drive.Builder(transport, jsonFactory, credential)
-                .setApplicationName("My Project").build();
+                .setApplicationName("NsaMft").build();
 
     }
 
@@ -124,12 +124,6 @@ public class GDriveSender implements Connector {
         String entityUser = jsonObject.get("client_email").getAsString();
 
 
-
-
-
-
-
-
         File fileMetadata= new File();
 //
 //        logger.info("Listing files in GDRIVESENDER "+drive.files().list().execute());
@@ -150,7 +144,7 @@ public class GDriveSender implements Connector {
        File file= drive.files().create(fileMetadata,contentStream).setFields("id").execute();   // worked from gdrive to outside
 
         Permission userPermission = new Permission();
-        userPermission.setType("user").setRole("writer").setEmailAddress("nsagdrive@virtual-plexus-275316.iam.gserviceaccount.com");
+        userPermission.setType("user").setRole("writer").setEmailAddress(jsonObject.get("client_email").toString());
 
         drive.permissions().create(file.getId(),userPermission).execute();
 

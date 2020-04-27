@@ -113,14 +113,14 @@ public class GDriveMetadataCollector implements MetadataCollector {
 
 //        Storage storage=new Storage.Builder(transport, jsonFactory, credential).build();
         Drive drive = new Drive.Builder(transport, jsonFactory, credential)
-                .setApplicationName("My Project").build();
+                .setApplicationName("NsaMft").build();
 
 
         logger.info("Listing files in GDRIVEMETADATACOLLECTOR "+drive.files().list().setFields("files(id,name,modifiedTime,md5Checksum)").execute());
 //
        ResourceMetadata metadata = new ResourceMetadata();
 
-       logger.info("BE AWARE FILE ID IS "+drive.files().get("1LKSXadWP_ZbJxbINP_Iy3BGqf8avwBH0").execute());
+       //logger.info("BE AWARE FILE ID IS "+drive.files().get("1LKSXadWP_ZbJxbINP_Iy3BGqf8avwBH0").execute());
        logger.info("BE AWARE CHECK gdriveResource.getResourcePath()"+gdriveResource.getResourcePath());
 
 
@@ -183,9 +183,24 @@ public class GDriveMetadataCollector implements MetadataCollector {
         }
 
         Drive drive = new Drive.Builder(transport, jsonFactory, credential)
-                .setApplicationName("My Project").build();
+                .setApplicationName("NsaMft").build();
        // Storage storage = new Storage.Builder(transport, jsonFactory, credential).build();
-        return !drive.files().get(gdriveResource.getResourcePath()).execute().isEmpty();//!storage.objects().get(gcsResource.getBucketName(), "PikaTest.txt").execute().isEmpty();
+        logger.info("Before getting resource");
+        String id=null;
+       // logger.info("Before is available return : " +drive.files().get(gdriveResource.getResourcePath()).execute());
+        FileList fileList=drive.files().list().setFields("files(id,name)").execute();
+        logger.info("gdriveResource.getResourcePath() " +gdriveResource.getResourcePath());
+        logger.info("Listing files in GDRIVEMETADATACOLLECTOR "+drive.files().list().setFields("files(id,name)").execute());
+        for (File f:fileList.getFiles()) {
+            if(f.getName().equalsIgnoreCase(gdriveResource.getResourcePath())){
+                logger.info("File matched in receiver"+f.getName());
+                id = f.getId();
+                return !drive.files().get(id).execute().isEmpty();
+            }
+
+        }
+
+        return false;
 
     }
 }

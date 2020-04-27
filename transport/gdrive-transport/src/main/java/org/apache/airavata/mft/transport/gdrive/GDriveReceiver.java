@@ -97,7 +97,7 @@ public class GDriveReceiver implements Connector {
 
         }
         drive = new Drive.Builder(transport, jsonFactory, credential)
-                .setApplicationName("My Project").build();
+                .setApplicationName("NsaMft").build();
         logger.info("Listing files in GDRIVE "+drive.files().list().execute());
 //
     }
