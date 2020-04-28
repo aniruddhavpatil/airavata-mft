@@ -62,4 +62,9 @@ public interface ResourceBackend {
     public GDriveResource createGDriveResource(GDriveResourceCreateRequest request) throws Exception;
     public boolean updateGDriveResource(GDriveResourceUpdateRequest request) throws Exception;
     public boolean deleteGDriveResource(GDriveResourceDeleteRequest request) throws Exception;
+
+    public Optional<OneDriveResource> getOneDriveResource(OneDriveResourceGetRequest request) throws Exception;
+    public OneDriveResource createOneDriveResource(OneDriveResourceCreateRequest request) throws Exception;
+    public boolean updateOneDriveResource(OneDriveResourceUpdateRequest request) throws Exception;
+    public boolean deleteOneDriveResource(OneDriveResourceDeleteRequest request) throws Exception;
 }

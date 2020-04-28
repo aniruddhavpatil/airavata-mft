@@ -45,6 +45,9 @@ public final class MetadataCollectorResolver {
             case "GDrive":
                 className = "org.apache.airavata.mft.transport.gdrive.GDriveMetadataCollector";
                 break;
+            case "OneDrive":
+                className = "org.apache.airavata.mft.transport.onedrive.OneDriveMetadataCollector";
+                break;
         }
 
         if (className != null) {

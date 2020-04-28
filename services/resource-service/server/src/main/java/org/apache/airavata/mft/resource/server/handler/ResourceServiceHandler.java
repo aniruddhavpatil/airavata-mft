@@ -511,5 +511,71 @@ public class ResourceServiceHandler extends ResourceServiceGrpc.ResourceServiceI
                     .asRuntimeException());
         }
     }
+
+    @Override
+    public void getOneDriveResource(OneDriveResourceGetRequest request, StreamObserver<OneDriveResource> responseObserver) {
+        try {
+            this.backend.getOneDriveResource(request).ifPresentOrElse(resource -> {
+                responseObserver.onNext(resource);
+                responseObserver.onCompleted();
+            }, () -> {
+                responseObserver.onError(Status.INTERNAL
+                        .withDescription("No OneDrive Resource with id " + request.getResourceId()).asRuntimeException());
+            });
+        } catch (Exception e) {
+            logger.error("Failed in retrieving OneDrive resource with id {}", request.getResourceId(), e);
+
+            responseObserver.onError(Status.INTERNAL.withCause(e)
+                    .withDescription("Failed in retrieving OneDrive resource with id " + request.getResourceId())
+                    .asRuntimeException());
+        }
+    }
+
+    @Override
+    public void createOneDriveResource(OneDriveResourceCreateRequest request,
+            StreamObserver<OneDriveResource> responseObserver) {
+        try {
+            responseObserver.onNext(this.backend.createOneDriveResource(request));
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            logger.error("Failed in creating the OneDrive resource", e);
+
+            responseObserver.onError(Status.INTERNAL.withCause(e)
+                    .withDescription("Failed in creating the OneDrive resource").asRuntimeException());
+        }
+    }
+
+    @Override
+    public void updateOneDriveResource(OneDriveResourceUpdateRequest request, StreamObserver<Empty> responseObserver) {
+        try {
+            this.backend.updateOneDriveResource(request);
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            logger.error("Failed in updating the OneDrive resource {}", request.getResourceId(), e);
+
+            responseObserver.onError(Status.INTERNAL.withCause(e)
+                    .withDescription("Failed in updating the OneDrive resource with id " + request.getResourceId())
+                    .asRuntimeException());
+        }
+    }
+
+    @Override
+    public void deleteOneDriveResource(OneDriveResourceDeleteRequest request, StreamObserver<Empty> responseObserver) {
+        try {
+            boolean res = this.backend.deleteOneDriveResource(request);
+            if (res) {
+                responseObserver.onCompleted();
+            } else {
+                responseObserver
+                        .onError(new Exception("Failed to delete OneDrive Resource with id " + request.getResourceId()));
+            }
+        } catch (Exception e) {
+            logger.error("Failed in deleting the OneDrive resource {}", request.getResourceId(), e);
+
+            responseObserver.onError(Status.INTERNAL.withCause(e)
+                    .withDescription("Failed in deleting the OneDrive resource with id " + request.getResourceId())
+                    .asRuntimeException());
+        }
+    }
 }
 

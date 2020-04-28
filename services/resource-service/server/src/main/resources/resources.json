@@ -59,5 +59,11 @@
     "type": "GDrive",
     "resourceId": "gdrive-bucket",
     "bucketName": ""
+  },
+  {
+    "type": "OneDrive",
+    "resourceId": "onedrive-blob",
+    "container": "sample-container",
+    "blobName": "sample.blob"
   }
 ]

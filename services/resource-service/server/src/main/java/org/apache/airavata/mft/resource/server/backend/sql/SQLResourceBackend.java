@@ -216,4 +216,24 @@ public class SQLResourceBackend implements ResourceBackend {
     public boolean deleteGDriveResource(GDriveResourceDeleteRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
+
+    @Override
+    public Optional<OneDriveResource> getOneDriveResource(OneDriveResourceGetRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public OneDriveResource createOneDriveResource(OneDriveResourceCreateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean updateOneDriveResource(OneDriveResourceUpdateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean deleteOneDriveResource(OneDriveResourceDeleteRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
 }

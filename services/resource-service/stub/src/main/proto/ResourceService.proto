@@ -209,6 +209,33 @@ message GDriveResourceDeleteRequest {
     string resourceId = 1;
 }
 
+// OneDrive Resource
+
+message OneDriveResource {
+    string resourceId = 1;
+    string container = 2;
+    string blobName = 3;
+}
+
+message OneDriveResourceGetRequest {
+    string resourceId = 1;
+}
+
+message OneDriveResourceCreateRequest {
+    string container = 1;
+    string blobName = 2;
+}
+
+message OneDriveResourceUpdateRequest {
+    string resourceId = 1;
+    string container = 2;
+    string blobName = 3;
+}
+
+message OneDriveResourceDeleteRequest {
+    string resourceId = 1;
+}
+
 service  ResourceService {
     // SCP Storage
 
@@ -391,6 +418,29 @@ service  ResourceService {
             };
         }
 
+    // OneDrive Resource
 
+    rpc getOneDriveResource (OneDriveResourceGetRequest) returns (OneDriveResource) {
+        option (google.api.http) = {
+           get: "/v1.0/resource/onedrive"
+        };
+    }
 
+    rpc createOneDriveResource (OneDriveResourceCreateRequest) returns (OneDriveResource) {
+        option (google.api.http) = {
+           post: "/v1.0/resource/onedrive"
+        };
+    }
+
+    rpc updateOneDriveResource (OneDriveResourceUpdateRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+           put: "/v1.0/resource/onedrive"
+        };
+    }
+
+    rpc deleteOneDriveResource (OneDriveResourceDeleteRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+           delete: "/v1.0/resource/onedrive"
+        };
+    }
 }
