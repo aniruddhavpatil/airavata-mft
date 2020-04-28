@@ -39,6 +39,7 @@
         <module>box-transport</module>
         <module>azure-transport</module>
         <module>gdrive-transport</module>
+        <module>onedrive-transport</module>
     </modules>
     <dependencies>
         <dependency>
