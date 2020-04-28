@@ -50,4 +50,9 @@ public interface SecretBackend {
     public GDriveSecret createGDriveSecret(GDriveSecretCreateRequest request) throws Exception;
     public boolean updateGDriveSecret(GDriveSecretUpdateRequest request) throws Exception;
     public boolean deleteGDriveSecret(GDriveSecretDeleteRequest request) throws Exception;
+
+    public Optional<OneDriveSecret> getOneDriveSecret(OneDriveSecretGetRequest request) throws Exception;
+    public OneDriveSecret createOneDriveSecret(OneDriveSecretCreateRequest request) throws Exception;
+    public boolean updateOneDriveSecret(OneDriveSecretUpdateRequest request) throws Exception;
+    public boolean deleteOneDriveSecret(OneDriveSecretDeleteRequest request) throws Exception;
 }

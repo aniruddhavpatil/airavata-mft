@@ -293,4 +293,59 @@ public class SecretServiceHandler extends SecretServiceGrpc.SecretServiceImplBas
         }
     }
 
+    @Override
+    public void getOneDriveSecret(OneDriveSecretGetRequest request, StreamObserver<OneDriveSecret> responseObserver) {
+        try {
+            this.backend.getOneDriveSecret(request).ifPresentOrElse(secret -> {
+                responseObserver.onNext(secret);
+                responseObserver.onCompleted();
+            }, () -> {
+                responseObserver.onError(Status.INTERNAL
+                        .withDescription("No OneDrive Secret with id " + request.getSecretId()).asRuntimeException());
+            });
+
+        } catch (Exception e) {
+            logger.error("Error in retrieving OneDrive Secret with id " + request.getSecretId(), e);
+            responseObserver.onError(Status.INTERNAL.withCause(e)
+                    .withDescription("Error in retrieving OneDrive Secret with id " + request.getSecretId())
+                    .asRuntimeException());
+        }
+        super.getOneDriveSecret(request, responseObserver);
+    }
+
+    @Override
+    public void createOneDriveSecret(OneDriveSecretCreateRequest request, StreamObserver<OneDriveSecret> responseObserver) {
+        try {
+            this.backend.createOneDriveSecret(request);
+        } catch (Exception e) {
+            logger.error("Error in creating OneDrive Secret", e);
+            responseObserver.onError(Status.INTERNAL.withCause(e).withDescription("Error in creating OneDrive Secret")
+                    .asRuntimeException());
+        }
+    }
+
+    @Override
+    public void updateOneDriveSecret(OneDriveSecretUpdateRequest request, StreamObserver<Empty> responseObserver) {
+        try {
+            this.backend.updateOneDriveSecret(request);
+        } catch (Exception e) {
+            logger.error("Error in updating OneDrive Secret with id {}", request.getSecretId(), e);
+            responseObserver.onError(Status.INTERNAL.withCause(e)
+                    .withDescription("Error in updating OneDrive Secret with id " + request.getSecretId())
+                    .asRuntimeException());
+        }
+    }
+
+    @Override
+    public void deleteOneDriveSecret(OneDriveSecretDeleteRequest request, StreamObserver<Empty> responseObserver) {
+        try {
+            this.backend.deleteOneDriveSecret(request);
+        } catch (Exception e) {
+            logger.error("Error in deleting OneDrive Secret with id {}", request.getSecretId(), e);
+            responseObserver.onError(Status.INTERNAL.withCause(e)
+                    .withDescription("Error in deleting OneDrive Secret with id " + request.getSecretId())
+                    .asRuntimeException());
+        }
+    }
+
 }
