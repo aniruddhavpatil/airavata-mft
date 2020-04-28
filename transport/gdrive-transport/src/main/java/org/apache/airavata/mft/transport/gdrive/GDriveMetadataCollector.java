@@ -113,7 +113,7 @@ public class GDriveMetadataCollector implements MetadataCollector {
 
 //        Storage storage=new Storage.Builder(transport, jsonFactory, credential).build();
         Drive drive = new Drive.Builder(transport, jsonFactory, credential)
-                .setApplicationName("NsaMft").build();
+                .setApplicationName("My Project").build();
 
 
         logger.info("Listing files in GDRIVEMETADATACOLLECTOR "+drive.files().list().setFields("files(id,name,modifiedTime,md5Checksum)").execute());
@@ -125,7 +125,7 @@ public class GDriveMetadataCollector implements MetadataCollector {
 
 
 
-       FileList fileList=drive.files().list().setFields("files(id,name,modifiedTime,md5Checksum,size)").execute();
+       FileList fileList=drive.files().list().setFields("files(id,name,modifiedTime,md5Checksum,size,mimeType)").execute();
        logger.info("File data is as follows##########################################");
       for (File f:fileList.getFiles()){
            if(f.getName().equalsIgnoreCase(gdriveResource.getResourcePath())){
@@ -136,6 +136,7 @@ public class GDriveMetadataCollector implements MetadataCollector {
                metadata.setMd5sum(f.getMd5Checksum());
                metadata.setUpdateTime(f.getModifiedTime().getValue());
                metadata.setResourceSize(f.getSize().longValue());
+
               // metadata.setCreatedTime(f.getCreatedTime().getValue());
            }
        }
@@ -183,7 +184,7 @@ public class GDriveMetadataCollector implements MetadataCollector {
         }
 
         Drive drive = new Drive.Builder(transport, jsonFactory, credential)
-                .setApplicationName("NsaMft").build();
+                .setApplicationName("My Project").build();
        // Storage storage = new Storage.Builder(transport, jsonFactory, credential).build();
         logger.info("Before getting resource");
         String id=null;

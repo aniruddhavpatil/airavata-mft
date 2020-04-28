@@ -38,6 +38,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.FileList;
 import com.google.api.services.drive.model.Permission;
 import com.google.api.services.drive.model.PermissionList;
 import com.google.gson.JsonObject;
@@ -99,7 +100,7 @@ public class GDriveSender implements Connector {
         }
 
          drive = new Drive.Builder(transport, jsonFactory, credential)
-                .setApplicationName("NsaMft").build();
+                .setApplicationName("My Project").build();
 
     }
 
@@ -119,7 +120,7 @@ public class GDriveSender implements Connector {
 
 
         InputStreamContent contentStream = new InputStreamContent(
-                "text/plain", context.getStreamBuffer().getInputStream());
+                "", context.getStreamBuffer().getInputStream());
 
         String entityUser = jsonObject.get("client_email").getAsString();
 
@@ -140,13 +141,48 @@ public class GDriveSender implements Connector {
 
 
        // drive.permissions().create(fileMetadata,userPermission);
+
+
+
+
+        String id=null;
+        // drive.permissions().create(fileMetadata,userPermission);
+        boolean fileupdated=false;
+        FileList fileList=drive.files().list().setFields("files(id,name)").execute();
+        logger.info("gdriveResource.getResourcePath() " +gdriveResource.getResourcePath());
+        logger.info("Listing files in GDRIVE SENDER "+drive.files().list().setFields("files(id,name)").execute());
+        for (File f:fileList.getFiles()) {
+            if (f.getName().equalsIgnoreCase(gdriveResource.getResourcePath())) {
+                logger.info(".......... File already exists ........ " + f.getName());
+                id = f.getId();
+                File file = drive.files().get(id).execute();
+                drive.files().update(file.getId(), fileMetadata, contentStream).setFields("id").execute();
+                fileupdated=true;
+            }
+
+        }
+
+        if(fileupdated==false){
+            logger.info(".......... File doesnot exist........ ");
+            File file = drive.files().create(fileMetadata,contentStream).setFields("id").execute();
+            Permission userPermission = new Permission();
+            userPermission.setType("user").setRole("writer").setEmailAddress(entityUser);
+
+            drive.permissions().create(file.getId(),userPermission).execute();
+
+        }
+
+
+
 //
-       File file= drive.files().create(fileMetadata,contentStream).setFields("id").execute();   // worked from gdrive to outside
-
-        Permission userPermission = new Permission();
-        userPermission.setType("user").setRole("writer").setEmailAddress(jsonObject.get("client_email").toString());
-
-        drive.permissions().create(file.getId(),userPermission).execute();
+//
+////
+//       File file= drive.files().create(fileMetadata,contentStream).setFields("id").execute();   // worked from gdrive to outside
+//
+//        Permission userPermission = new Permission();
+//        userPermission.setType("user").setRole("writer").setEmailAddress(entityUser);
+//
+//        drive.permissions().create(file.getId(),userPermission).execute();
 
 
         // logger.info("File input and metadata created in "+file.getId());
