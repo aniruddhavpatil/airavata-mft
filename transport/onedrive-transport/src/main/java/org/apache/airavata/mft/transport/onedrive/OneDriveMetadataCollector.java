@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.airavata.mft.onedrive.transport;
+package org.apache.airavata.mft.transport.onedrive;
 
 import com.microsoft.graph.auth.enums.NationalCloud;
 import org.apache.airavata.mft.core.ResourceMetadata;
@@ -27,17 +27,19 @@ import com.microsoft.graph.auth.confidentialClient.ClientCredentialProvider;
 import java.util.*;
 
 public class OneDriveMetadataCollector implements MetadataCollector{
-    ArrayList<String> scopes = new ArrayList<String>();
-    scopes.add("https://graph.microsoft.com/User.ReadBasic.All");
-//            "https://graph.microsoft.com/Files.ReadWrite",
-//            "https://graph.microsoft.com/Files.Read",
-//            "https://graph.microsoft.com/Files.ReadWrite"
+
 
     @Override
     public void init(String resourceServiceHost, int resourceServicePort, String secretServiceHost, int secretServicePort) {
+        ArrayList<String> scopes = new ArrayList<String>();
+        scopes.add("https://graph.microsoft.com/User.ReadBasic.All");
+        scopes.add("https://graph.microsoft.com/Files.ReadWrite");
+        scopes.add("https://graph.microsoft.com/Files.Read");
+        scopes.add("https://graph.microsoft.com/Files.ReadWrite");
+
         ClientCredentialProvider authProvider = new ClientCredentialProvider(
                 System.getenv("ONEDRIVE_CLIENT_ID"),
-                Collections.singletonList(SCOPES),
+                scopes,
                 System.getenv("ONEDRIVE_CLIENT_SECRET"),
                 System.getenv("ONEDRIVE_TENANT_GUID"),
                 NationalCloud.Global);
