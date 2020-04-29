@@ -15,98 +15,41 @@
  * limitations under the License.
  */
 
-package org.apache.airavata.mft.transport.onedrive;
+package org.apache.airavata.mft.onedrive.transport;
 
-import com.onedrive.storage.blob.BlobClient;
-import com.onedrive.storage.blob.BlobContainerClient;
-import com.onedrive.storage.blob.BlobServiceClient;
-import com.onedrive.storage.blob.BlobServiceClientBuilder;
-import com.onedrive.storage.blob.models.BlobProperties;
+import com.microsoft.graph.auth.enums.NationalCloud;
 import org.apache.airavata.mft.core.ResourceMetadata;
 import org.apache.airavata.mft.core.api.MetadataCollector;
-import org.apache.airavata.mft.resource.client.ResourceServiceClient;
-import org.apache.airavata.mft.resource.service.OneDriveResource;
-import org.apache.airavata.mft.resource.service.OneDriveResourceGetRequest;
-import org.apache.airavata.mft.resource.service.ResourceServiceGrpc;
-import org.apache.airavata.mft.secret.client.SecretServiceClient;
-import org.apache.airavata.mft.secret.service.OneDriveSecret;
-import org.apache.airavata.mft.secret.service.OneDriveSecretGetRequest;
-import org.apache.airavata.mft.secret.service.SecretServiceGrpc;
+import com.microsoft.graph.authentication.IAuthenticationProvider;
+import com.microsoft.graph.models.extensions.IGraphServiceClient;
+import com.microsoft.graph.auth.confidentialClient.ClientCredentialProvider;
 
-public class OneDriveMetadataCollector implements MetadataCollector {
+import java.util.*;
 
-    private String resourceServiceHost;
-    private int resourceServicePort;
-    private String secretServiceHost;
-    private int secretServicePort;
-    boolean initialized = false;
+public class OneDriveMetadataCollector implements MetadataCollector{
+    ArrayList<String> scopes = new ArrayList<String>();
+    scopes.add("https://graph.microsoft.com/User.ReadBasic.All");
+//            "https://graph.microsoft.com/Files.ReadWrite",
+//            "https://graph.microsoft.com/Files.Read",
+//            "https://graph.microsoft.com/Files.ReadWrite"
 
     @Override
     public void init(String resourceServiceHost, int resourceServicePort, String secretServiceHost, int secretServicePort) {
-        this.resourceServiceHost = resourceServiceHost;
-        this.resourceServicePort = resourceServicePort;
-        this.secretServiceHost = secretServiceHost;
-        this.secretServicePort = secretServicePort;
-        this.initialized = true;
-    }
-
-    private void checkInitialized() {
-        if (!initialized) {
-            throw new IllegalStateException("OneDrive Metadata Collector is not initialized");
-        }
+        ClientCredentialProvider authProvider = new ClientCredentialProvider(
+                System.getenv("ONEDRIVE_CLIENT_ID"),
+                Collections.singletonList(SCOPES),
+                System.getenv("ONEDRIVE_CLIENT_SECRET"),
+                System.getenv("ONEDRIVE_TENANT_GUID"),
+                NationalCloud.Global);
     }
 
     @Override
     public ResourceMetadata getGetResourceMetadata(String resourceId, String credentialToken) throws Exception {
-        checkInitialized();
-
-        if (!isAvailable(resourceId, credentialToken)) {
-            throw new Exception("OneDrive blob can not find for resource id " + resourceId);
-        }
-
-        ResourceServiceGrpc.ResourceServiceBlockingStub resourceClient = ResourceServiceClient.buildClient(resourceServiceHost, resourceServicePort);
-        OneDriveResource onedriveResource = resourceClient.getOneDriveResource(OneDriveResourceGetRequest.newBuilder().setResourceId(resourceId).build());
-
-        SecretServiceGrpc.SecretServiceBlockingStub secretClient = SecretServiceClient.buildClient(secretServiceHost, secretServicePort);
-        OneDriveSecret onedriveSecret = secretClient.getOneDriveSecret(OneDriveSecretGetRequest.newBuilder().setSecretId(credentialToken).build());
-
-        BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().connectionString(onedriveSecret.getConnectionString()).buildClient();
-
-        BlobClient blobClient = blobServiceClient.getBlobContainerClient(onedriveResource.getContainer()).getBlobClient(onedriveResource.getBlobName());
-
-        BlobProperties properties = blobClient.getBlockBlobClient().getProperties();
-        ResourceMetadata metadata = new ResourceMetadata();
-        metadata.setResourceSize(properties.getBlobSize());
-        metadata.setCreatedTime(properties.getCreationTime().toEpochSecond());
-        metadata.setUpdateTime(properties.getCreationTime().toEpochSecond());
-
-        byte[] contentMd5 = properties.getContentMd5();
-        StringBuilder md5sb = new StringBuilder();
-        for (byte aByte : contentMd5) {
-            md5sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
-        }
-
-        metadata.setMd5sum(md5sb.toString());
-
-        return metadata;
+        return null;
     }
 
     @Override
     public Boolean isAvailable(String resourceId, String credentialToken) throws Exception {
-        checkInitialized();
-
-        ResourceServiceGrpc.ResourceServiceBlockingStub resourceClient = ResourceServiceClient.buildClient(resourceServiceHost, resourceServicePort);
-        OneDriveResource onedriveResource = resourceClient.getOneDriveResource(OneDriveResourceGetRequest.newBuilder().setResourceId(resourceId).build());
-
-        SecretServiceGrpc.SecretServiceBlockingStub secretClient = SecretServiceClient.buildClient(secretServiceHost, secretServicePort);
-        OneDriveSecret onedriveSecret = secretClient.getOneDriveSecret(OneDriveSecretGetRequest.newBuilder().setSecretId(credentialToken).build());
-
-        BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().connectionString(onedriveSecret.getConnectionString()).buildClient();
-        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(onedriveResource.getContainer());
-        boolean containerExists = containerClient.exists();
-        if (!containerExists) {
-            return false;
-        }
-        return containerClient.getBlobClient(onedriveResource.getBlobName()).exists();
+        return null;
     }
 }

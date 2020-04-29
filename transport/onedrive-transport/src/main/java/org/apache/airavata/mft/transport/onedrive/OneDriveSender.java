@@ -17,41 +17,13 @@
 
 package org.apache.airavata.mft.transport.onedrive;
 
-import com.onedrive.storage.blob.BlobContainerClient;
-import com.onedrive.storage.blob.BlobServiceClient;
-import com.onedrive.storage.blob.BlobServiceClientBuilder;
-import com.onedrive.storage.blob.specialized.BlockBlobClient;
 import org.apache.airavata.mft.core.ConnectorContext;
 import org.apache.airavata.mft.core.api.Connector;
-import org.apache.airavata.mft.resource.client.ResourceServiceClient;
-import org.apache.airavata.mft.resource.service.OneDriveResource;
-import org.apache.airavata.mft.resource.service.OneDriveResourceGetRequest;
-import org.apache.airavata.mft.resource.service.ResourceServiceGrpc;
-import org.apache.airavata.mft.secret.client.SecretServiceClient;
-import org.apache.airavata.mft.secret.service.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class OneDriveSender implements Connector {
-
-    private static final Logger logger = LoggerFactory.getLogger(OneDriveSender.class);
-
-    private boolean initialized = false;
-    private OneDriveResource onedriveResource;
-    BlobContainerClient containerClient;
-
+public class OneDriveSender implements Connector{
     @Override
     public void init(String resourceId, String credentialToken, String resourceServiceHost, int resourceServicePort, String secretServiceHost, int secretServicePort) throws Exception {
-        this.initialized = true;
 
-        ResourceServiceGrpc.ResourceServiceBlockingStub resourceClient = ResourceServiceClient.buildClient(resourceServiceHost, resourceServicePort);
-        this.onedriveResource = resourceClient.getOneDriveResource(OneDriveResourceGetRequest.newBuilder().setResourceId(resourceId).build());
-
-        SecretServiceGrpc.SecretServiceBlockingStub secretClient = SecretServiceClient.buildClient(secretServiceHost, secretServicePort);
-        OneDriveSecret onedriveSecret = secretClient.getOneDriveSecret(OneDriveSecretGetRequest.newBuilder().setSecretId(credentialToken).build());
-
-        BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().connectionString(onedriveSecret.getConnectionString()).buildClient();
-        this.containerClient = blobServiceClient.getBlobContainerClient(onedriveResource.getContainer());
     }
 
     @Override
@@ -59,19 +31,8 @@ public class OneDriveSender implements Connector {
 
     }
 
-    private void checkInitialized() {
-        if (!initialized) {
-            throw new IllegalStateException("OneDrive Sender is not initialized");
-        }
-    }
-
     @Override
     public void startStream(ConnectorContext context) throws Exception {
-        logger.info("Starting scp send for remote server for transfer {}", context.getTransferId());
-        checkInitialized();
-        BlockBlobClient blockBlobClient = containerClient.getBlobClient(onedriveResource.getBlobName()).getBlockBlobClient();
-        blockBlobClient.upload(context.getStreamBuffer().getInputStream(), context.getMetadata().getResourceSize(), true);
-        logger.info("Completed scp send for remote server for transfer {}", context.getTransferId());
 
     }
 }
