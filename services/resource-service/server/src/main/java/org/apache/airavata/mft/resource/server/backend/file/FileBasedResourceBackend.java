@@ -395,7 +395,7 @@ public class FileBasedResourceBackend implements ResourceBackend {
             JSONArray resourceList = (JSONArray) obj;
 
             List<OneDriveResource> onedriveResources = (List<OneDriveResource>) resourceList.stream()
-                    .filter(resource -> "OneDrive".equals(((JSONObject) resource).get("type").toString()))
+                    .filter(resource -> "ONEDRIVE".equals(((JSONObject) resource).get("type").toString()))
                     .map(resource -> {
                         JSONObject r = (JSONObject) resource;
 

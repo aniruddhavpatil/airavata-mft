@@ -61,7 +61,7 @@
     "resourcePath": "/test.txt"
   },
   {
-    "type": "OneDrive",
+    "type": "ONEDRIVE",
     "resourceId": "onedrive-blob",
     "container": "sample-container",
     "blobName": "sample.blob"

@@ -303,7 +303,7 @@ public class FileBasedSecretBackend implements SecretBackend {
             JSONArray resourceList = (JSONArray) obj;
 
             List<OneDriveSecret> onedriveSecrets = (List<OneDriveSecret>) resourceList.stream()
-                    .filter(resource -> "OneDrive".equals(((JSONObject) resource).get("type").toString()))
+                    .filter(resource -> "ONEDRIVE".equals(((JSONObject) resource).get("type").toString()))
                     .map(resource -> {
                         JSONObject r = (JSONObject) resource;
 
