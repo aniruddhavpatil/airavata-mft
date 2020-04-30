@@ -383,4 +383,45 @@ public class FileBasedResourceBackend implements ResourceBackend {
     public boolean deleteDropboxResource(DropboxResourceDeleteRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
+
+    @Override
+    public Optional<OneDriveResource> getOneDriveResource(OneDriveResourceGetRequest request) throws Exception {
+        JSONParser jsonParser = new JSONParser();
+        InputStream inputStream = FileBasedResourceBackend.class.getClassLoader().getResourceAsStream(resourceFile);
+
+        try (InputStreamReader reader = new InputStreamReader(inputStream)) {
+            Object obj = jsonParser.parse(reader);
+
+            JSONArray resourceList = (JSONArray) obj;
+
+            List<OneDriveResource> onedriveResources = (List<OneDriveResource>) resourceList.stream()
+                    .filter(resource -> "OneDrive".equals(((JSONObject) resource).get("type").toString()))
+                    .map(resource -> {
+                        JSONObject r = (JSONObject) resource;
+
+                        OneDriveResource onedriveResource = OneDriveResource.newBuilder()
+                                .setBlobName(r.get("blobName").toString()).setContainer(r.get("container").toString())
+                                .setResourceId(r.get("resourceId").toString()).build();
+
+                        return onedriveResource;
+                    }).collect(Collectors.toList());
+            return onedriveResources.stream().filter(r -> request.getResourceId().equals(r.getResourceId()))
+                    .findFirst();
+        }
+    }
+
+    @Override
+    public OneDriveResource createOneDriveResource(OneDriveResourceCreateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean updateOneDriveResource(OneDriveResourceUpdateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean deleteOneDriveResource(OneDriveResourceDeleteRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
 }

@@ -179,6 +179,24 @@ public class AiravataSecretBackend implements SecretBackend {
     public boolean deleteDropboxSecret(DropboxSecretDeleteRequest request) throws Exception {
         throw new UnsupportedOperationException("Operation is not supported in backend");
     }
+    
+    @Override
+    public Optional<OneDriveSecret> getOneDriveSecret(OneDriveSecretGetRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
 
+    @Override
+    public OneDriveSecret createOneDriveSecret(OneDriveSecretCreateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
 
+    @Override
+    public boolean updateOneDriveSecret(OneDriveSecretUpdateRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
+
+    @Override
+    public boolean deleteOneDriveSecret(OneDriveSecretDeleteRequest request) throws Exception {
+        throw new UnsupportedOperationException("Operation is not supported in backend");
+    }
 }

@@ -55,4 +55,9 @@ public interface SecretBackend {
     public DropboxSecret createDropboxSecret(DropboxSecretCreateRequest request) throws Exception;
     public boolean updateDropboxSecret(DropboxSecretUpdateRequest request) throws Exception;
     public boolean deleteDropboxSecret(DropboxSecretDeleteRequest request) throws Exception;
+
+    public Optional<OneDriveSecret> getOneDriveSecret(OneDriveSecretGetRequest request) throws Exception;
+    public OneDriveSecret createOneDriveSecret(OneDriveSecretCreateRequest request) throws Exception;
+    public boolean updateOneDriveSecret(OneDriveSecretUpdateRequest request) throws Exception;
+    public boolean deleteOneDriveSecret(OneDriveSecretDeleteRequest request) throws Exception;
 }

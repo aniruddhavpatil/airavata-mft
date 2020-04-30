@@ -59,5 +59,11 @@
     "type": "DROPBOX",
     "resourceId": "dropbox-file",
     "resourcePath": "/test.txt"
+  },
+  {
+    "type": "OneDrive",
+    "resourceId": "onedrive-blob",
+    "container": "sample-container",
+    "blobName": "sample.blob"
   }
 ]

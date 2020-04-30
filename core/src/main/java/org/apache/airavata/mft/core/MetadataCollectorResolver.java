@@ -48,6 +48,9 @@ public final class MetadataCollectorResolver {
             case "DROPBOX":
                 className = "org.apache.airavata.mft.transport.dropbox.DropboxMetadataCollector";
                 break;
+            case "ONEDRIVE":
+                className = "org.apache.airavata.mft.transport.onedrive.OneDriveMetadataCollector";
+                break;
         }
 
         if (className != null) {

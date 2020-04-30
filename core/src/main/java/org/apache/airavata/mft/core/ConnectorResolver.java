@@ -97,6 +97,16 @@ public final class ConnectorResolver {
                         break;
                 }
                 break;
+            case "ONEDRIVE":
+                switch (direction) {
+                    case "IN":
+                        className = "org.apache.airavata.mft.transport.onedrive.OneDriveReceiver";
+                        break;
+                    case "OUT":
+                        className = "org.apache.airavata.mft.transport.onedrive.OneDriveReceiver";
+                        break;
+                }
+                break;  
         }
 
         if (className != null) {
