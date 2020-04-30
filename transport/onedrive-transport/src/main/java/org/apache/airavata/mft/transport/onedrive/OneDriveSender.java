@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.airavata.mft.onedrive.transport;
+package org.apache.airavata.mft.transport.onedrive;
 
 import org.apache.airavata.mft.core.ConnectorContext;
 import org.apache.airavata.mft.core.api.Connector;
